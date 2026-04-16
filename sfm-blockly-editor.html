@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SFM Blockly Editor</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#0b0d12;--bg2:#121620;--bg3:#181d29;--bg4:#1e2535;--bd:#252d40;--bd2:#344060;--tx:#e8eaf6;--tx2:#9ea7c6;--tx3:#5a678e;--ac:#7c6af7;--amber:#f0922b;--red:#e55353;--green:#4ecb71;--teal:#3ecfb8;--pink:#e05eb5;--code:#06080d;--tr:#131a2e;--trb:#2a3b70;--tra:#5572cc;--in:#13241a;--inb:#265538;--ina:#3d9956;--out:#201728;--outb:#5a3375;--outa:#9b5cc4;--if:#201810;--ifb:#6b4a0e;--ifa:#c48a20;--fg:#201313;--fgb:#581c1c;--fga:#cc3333;--nm:#0d1818;--nmb:#184a46;--nma:#2e8c84}
   [data-theme=day]{--bg:#f0f2f8;--bg2:#fff;--bg3:#f8f9fc;--bg4:#f0f2f7;--bd:#d0d7e5;--bd2:#a8b4cc;--tx:#1a1f3a;--tx2:#4a5280;--tx3:#8890b8;--ac:#5b4ecc;--amber:#c4720d;--red:#cc2222;--green:#1a8c3a;--teal:#1a9e8a;--pink:#b02090;--code:#f8f9fe;--tr:#f0f4ff;--trb:#abc0f0;--tra:#4a69bd;--in:#f0fff4;--inb:#98d8b0;--ina:#2a7a48;--out:#f8f0ff;--outb:#d0a0f0;--outa:#7030a8;--if:#fffaec;--ifb:#f0d080;--ifa:#9a6808;--fg:#fff0f0;--fgb:#f0a0a0;--fga:#aa1818;--nm:#f0fffe;--nmb:#90e0d8;--nma:#1a8078}
   [data-theme=twilight]{--bg:#0a0500;--bg2:#100800;--bg3:#180c00;--bg4:#201000;--bd:#3a1800;--bd2:#5a2800;--tx:#e8c080;--tx2:#b27b36;--tx3:#704010;--ac:#c07820;--amber:#e08010;--red:#c04020;--green:#805000;--teal:#906030;--pink:#a04020;--code:#060300;--tr:#150a00;--trb:#502000;--tra:#904010;--in:#0e0a00;--inb:#403000;--ina:#706000;--out:#120800;--outb:#602000;--outa:#a04010;--if:#150c00;--ifb:#604010;--ifa:#a07020;--fg:#120600;--fgb:#501000;--fga:#902010;--nm:#0e0800;--nmb:#403000;--nma:#705020}
-  *{box-sizing:border-box;margin:0;padding:0}body{font:12px Syne,sans-serif;background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden}button,input,select,textarea{font:inherit}
+  *{box-sizing:border-box;margin:0;padding:0}body{font:12px system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden}button,input,select,textarea{font:inherit}
   #topbar{display:flex;align-items:center;gap:10px;padding:0 16px;height:56px;background:var(--bg2);border-bottom:1px solid var(--bd)}#logo{font-size:18px;font-weight:800;color:var(--ac);margin-right:8px}#logo span{color:var(--amber)}
   .btn,.mini,.theme,.script,.pblock{transition:.15s background,.15s border-color,.15s color,.15s transform}.btn,.copy,.mini,.theme,.fieldbtn,.script{border:1px solid var(--bd);background:var(--bg3);color:var(--tx2);border-radius:6px}.btn,.copy,.fieldbtn{padding:6px 10px;cursor:pointer;font-size:12px;font-weight:700}.btn:hover,.copy:hover,.fieldbtn:hover,.script:hover,.mini:hover,.theme:hover{background:var(--bg4);border-color:var(--bd2);color:var(--tx)}.btn.primary{background:var(--ac);border-color:var(--ac);color:#fff}
   #status{margin-left:auto;padding:4px 10px;border:1px solid var(--bd);border-radius:999px;background:var(--bg3);font-size:11px;font-weight:700;color:var(--tx2)}#themes{display:flex;gap:4px}.theme{width:30px;height:30px;cursor:pointer;font-size:12px;font-weight:800}.theme.active{border-color:var(--ac);color:var(--ac)}
   #main{display:flex;flex:1;overflow:hidden}#side{width:260px;background:var(--bg2);border-right:1px solid var(--bd);overflow:auto;flex-shrink:0}#canvas{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}#code{width:320px;background:var(--bg2);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
+  .drag-handle{width:6px;background:var(--bg2);border-left:1px solid var(--bd);border-right:1px solid var(--bd);cursor:col-resize;transition:background .2s}.drag-handle:hover,.drag-handle.active{background:var(--ac)}
   .sec{padding:10px 12px 6px}.title{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--bd)}.row{display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap}.lab{font-size:10px;font-weight:700;color:var(--tx2);min-width:70px;padding-top:5px}.grow{flex:1}
-  .inp,.sel,.ta{background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);padding:4px 6px;font:11px JetBrains Mono,monospace;outline:none}.inp,.ta{flex:1;min-width:90px}.inp:focus,.sel:focus,.ta:focus{border-color:var(--ac)}.ta{min-height:42px;resize:vertical;width:100%}.inp:disabled,.sel:disabled,.ta:disabled{opacity:.55;cursor:not-allowed}
+  .inp,.sel,.ta{background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);padding:4px 6px;font:11px ui-monospace,monospace;outline:none}.inp,.ta{flex:1;min-width:90px}.inp:focus,.sel:focus,.ta:focus{border-color:var(--ac)}.ta{min-height:42px;resize:vertical;width:100%}.inp:disabled,.sel:disabled,.ta:disabled{opacity:.55;cursor:not-allowed}
   .check{display:inline-flex;align-items:center;gap:8px;min-height:24px;font-size:10px;color:var(--tx2);cursor:pointer}
   .switch{position:relative;display:inline-block;width:28px;height:16px;flex-shrink:0}.switch input{opacity:0;width:0;height:0}
   .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:var(--bg4);transition:.2s;border-radius:16px;border:1px solid var(--bd)}
@@ -36,10 +36,11 @@
   .block{border-radius:6px;border:1.5px solid var(--bd);background:var(--bg2)}.tr{border-color:var(--trb);background:var(--tr)}.in{border-color:var(--inb);background:var(--in)}.outb{border-color:var(--outb);background:var(--out)}.iff{border-color:var(--ifb);background:var(--if)}.fgb{border-color:var(--fgb);background:var(--fg)}.nmb{border-color:var(--nmb);background:var(--nm)}.cmtblk{border-color:var(--bd);background:var(--bg3)}
   .head{display:flex;align-items:center;gap:6px;padding:6px 8px;position:relative}.tr>.head{background:var(--tr)}.in>.head{background:var(--in)}.outb>.head{background:var(--out)}.iff>.head{background:var(--if)}.fgb>.head{background:var(--fg)}.nmb>.head{background:var(--nm)}.cmtblk>.head{background:var(--bg3)}
   .accent{width:3px;height:calc(100% - 8px);position:absolute;left:0;top:4px;border-radius:2px}.tr .accent{background:var(--tra)}.in .accent{background:var(--ina)}.outb .accent{background:var(--outa)}.iff .accent{background:var(--ifa)}.fgb .accent{background:var(--fga)}.nmb .accent{background:var(--nma)}.cmtblk .accent{background:var(--tx3)}
+  .grab{cursor:grab;color:var(--tx3);display:flex;align-items:center;padding:0 2px}.grab:active{cursor:grabbing}
   .toggle,.mini{width:18px;height:18px;background:transparent;border:1px solid transparent;color:var(--tx3);cursor:pointer;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}.mini.danger:hover{background:var(--fg);border-color:var(--fgb);color:var(--red)}
-  .label{flex:1;padding-left:4px;font-size:11px;font-weight:800;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tr .label{color:var(--tra)}.in .label{color:var(--ina)}.outb .label{color:var(--outa)}.iff .label{color:var(--ifa)}.fgb .label{color:var(--fga)}.nmb .label{color:var(--nma)}.actions{display:flex;gap:2px}.body{padding:8px;display:flex;flex-direction:column;gap:6px}.collapsed .body{display:none}.collapsed .toggle{transform:rotate(-90deg)}
+  .label{flex:1;padding-left:4px;font-size:11px;font-weight:800;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}.tr .label{color:var(--tra)}.in .label{color:var(--ina)}.outb .label{color:var(--outa)}.iff .label{color:var(--ifa)}.fgb .label{color:var(--fga)}.nmb .label{color:var(--nma)}.actions{display:flex;gap:2px}.body{padding:8px;display:flex;flex-direction:column;gap:6px}.collapsed .body{display:none}.collapsed .toggle{transform:rotate(-90deg)}
   .card,.zone{border:1px solid var(--bd);border-left:4px solid var(--bd2);border-radius:6px;background:var(--bg3);padding:8px;padding-left:14px;display:flex;flex-direction:column;gap:6px;margin-bottom:2px}.cardhead,.zonehead{display:flex;align-items:center;justify-content:space-between;gap:6px}.tag{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--tx3)}.zoneitems{display:flex;flex-direction:column;gap:6px}.zoneempty{padding:8px;border:1px dashed var(--bd);border-radius:4px;text-align:center;color:var(--tx3);font-size:10px}.add{display:flex;flex-wrap:wrap;gap:4px}
-  #codehead{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}#codetitle{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#out{flex:1;overflow:auto;padding:14px;background:var(--code);font:12px/1.7 JetBrains Mono,monospace;white-space:pre;tab-size:4}
+  #codehead{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}#codetitle{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#out{flex:1;overflow:auto;padding:14px;background:var(--code);font:12px/1.7 ui-monospace,monospace;white-space:pre;tab-size:4}
   .tk{color:var(--tra);font-weight:700}.kw{color:var(--outa)}.kw2{color:var(--ina)}.kw3{color:var(--ifa)}.str{color:var(--teal)}.num{color:var(--amber)}.cmt{color:var(--tx3);font-style:italic}.item{color:var(--pink)}
   @media (max-width:980px){#main{flex-direction:column}#side,#code{width:100%;border:0;border-bottom:1px solid var(--bd)}#side{max-height:38vh}#code{max-height:32vh}#status{display:none}}
 </style>
@@ -51,6 +52,8 @@
   <button class="btn" onclick="loadExample()">Load Example</button>
   <button class="btn" onclick="saveCopy()">Save Copy</button>
   <button class="btn" onclick="clearAll()">Clear</button>
+  <button class="btn" onclick="toggleAllBlocks(true)">Collapse All</button>
+  <button class="btn" onclick="toggleAllBlocks(false)">Expand All</button>
   <button class="btn" onclick="importSFM()">Import .sfm</button>
   <button class="btn primary" onclick="exportSFM()">Export .sfm</button>
   <div id="status">Local autosave active</div>
@@ -82,29 +85,22 @@
       <div id="globalTags" style="display:flex;flex-wrap:wrap;gap:4px"></div>
     </div>
     <div class="sec">
-      <div class="title">Structure</div>
-      <div class="pblock pb-trigger" draggable="true" onclick="onPaletteClick('trigger')" ondragstart="onPaletteDragStart(event,'trigger')"><div class="dot"></div>Trigger</div>
-    </div>
-    <div class="sec">
-      <div class="title">Statements</div>
-      <div class="pblock pb-input" draggable="true" onclick="onPaletteClick('input')" ondragstart="onPaletteDragStart(event,'input')"><div class="dot"></div>Input</div>
-      <div class="pblock pb-output" draggable="true" onclick="onPaletteClick('output')" ondragstart="onPaletteDragStart(event,'output')"><div class="dot"></div>Output</div>
-      <div class="pblock pb-if" draggable="true" onclick="onPaletteClick('if')" ondragstart="onPaletteDragStart(event,'if')"><div class="dot"></div>If / Else If / Else</div>
-      <div class="pblock pb-forget" draggable="true" onclick="onPaletteClick('forget')" ondragstart="onPaletteDragStart(event,'forget')"><div class="dot"></div>Forget</div>
-      <div class="pblock pb-comment" draggable="true" onclick="onPaletteClick('comment')" ondragstart="onPaletteDragStart(event,'comment')"><div class="dot"></div>Comment</div>
-    </div>
-    <div class="sec">
       <div class="title">Notes</div>
-      <div class="note">Drag only <strong>Name</strong> and <strong>Trigger</strong> onto the main canvas. Add Input, Output, If, and Forget inside triggers or IF branches. The editor no longer rebuilds everything on every keystroke and autosaves locally.</div>
+      <div class="note">Add Triggers and Comments using the buttons on the canvas. Add Input, Output, If, and Forget inside triggers or IF branches. The editor no longer rebuilds everything on every keystroke and autosaves locally.</div>
     </div>
   </div>
   <div id="canvas" ondragover="onCanvasDragOver(event)" ondrop="onCanvasDrop(event)" ondragleave="onCanvasDragLeave(event)">
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn primary" onclick="addRoot('trigger')">+ Add Trigger</button>
+      <button class="btn" onclick="addRoot('comment')">+ Add Comment</button>
+    </div>
     <div id="empty">
       <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="12" width="56" height="40" rx="6" stroke="currentColor" stroke-width="2" stroke-dasharray="5 3"/><rect x="12" y="20" width="16" height="10" rx="3" fill="currentColor" opacity=".3"/><rect x="36" y="20" width="16" height="10" rx="3" fill="currentColor" opacity=".3"/><rect x="12" y="34" width="40" height="10" rx="3" fill="currentColor" opacity=".2"/></svg>
       <h3>Drop top-level blocks here</h3>
       <p>Start with <strong>Program Name</strong> or <strong>Trigger</strong>. Statements are added inside triggers and IF branches.</p>
     </div>
   </div>
+  <div id="resizer" class="drag-handle"></div>
   <div id="code">
     <div id="codehead"><span id="codetitle">Generated SFM</span><button class="copy" onclick="copyCode()">Copy</button></div>
     <div id="out"><span class="cmt">-- Start building to see code</span></div>
@@ -112,7 +108,7 @@
 </div>
 <script>
 const STORAGE_KEY="sfm-blockly-editor-v3",ROOT_TYPES=new Set(["name","trigger","comment"]),STATEMENTS=["input","output","if","forget","comment"];
-let dragType=null,idCounter=0,blocks=[],saveTimer=null,lastCode="";
+let dragType=null,draggedBlock=null,idCounter=0,blocks=[],saveTimer=null,lastCode="";
 const app=loadState();init();
 
 function init(){
@@ -128,6 +124,20 @@ function init(){
   renderScriptList();
   renderAll();
   window.addEventListener("beforeunload",persistNow);
+  initResizer();
+}
+
+function initResizer(){
+  const resizer = document.getElementById("resizer");
+  const code = document.getElementById("code");
+  let isDragging = false;
+  resizer.addEventListener("mousedown", e => { isDragging = true; resizer.classList.add("active"); document.body.style.cursor = "col-resize"; });
+  window.addEventListener("mousemove", e => {
+    if(!isDragging) return;
+    const width = window.innerWidth - e.clientX;
+    if(width > 100 && width < window.innerWidth - 300){ code.style.width = width + "px"; }
+  });
+  window.addEventListener("mouseup", () => { isDragging = false; resizer.classList.remove("active"); document.body.style.cursor = ""; });
 }
 
 function loadState(){
@@ -469,11 +479,26 @@ function renderBlock(b,arr,i){
   const root=document.createElement("div");
   root.className="block "+cls(b.type);
   root.dataset.id=b.id;
+  root.draggable=true;
+  root.ondragstart=e=>{e.stopPropagation();dragType=null;draggedBlock={arr,i};e.dataTransfer.effectAllowed="move";};
+  root.ondragover=e=>{if(draggedBlock){e.preventDefault();e.stopPropagation();root.style.borderTop="2px solid var(--ac)";}};
+  root.ondragleave=()=>{root.style.borderTop="";};
+  root.ondrop=e=>{
+    if(draggedBlock){
+      e.preventDefault();e.stopPropagation();root.style.borderTop="";
+      const s=draggedBlock;
+      if(s.arr===arr && s.i===i) return;
+      const item=s.arr.splice(s.i,1)[0];
+      let ni=i; if(s.arr===arr && s.i < i) ni=i;
+      arr.splice(ni,0,item);
+      draggedBlock=null; renderAll(); scheduleSave("Block moved");
+    }
+  };
   if(b.collapsed) root.classList.add("collapsed");
 
   const head=document.createElement("div");
   head.className="head";
-  head.innerHTML='<div class="accent"></div>';
+  head.innerHTML='<div class="accent"></div><div class="grab">⋮⋮</div>';
 
   const tog=document.createElement("button");
   tog.className="toggle";
@@ -484,7 +509,7 @@ function renderBlock(b,arr,i){
 
   const label=document.createElement("div");
   label.className="label";
-  label.textContent=blockLabel(b);
+  label.innerHTML=highlightLabel(b);
   head.appendChild(label);
 
   const actions=document.createElement("div");
@@ -506,10 +531,10 @@ function renderBlock(b,arr,i){
 function cls(type){return({name:"nmb",trigger:"tr",input:"in",output:"outb",if:"iff",forget:"fgb",comment:"cmtblk"})[type]||"";}
 function mini(t,title,fn,disabled,danger){const b=document.createElement("button");b.className="mini"+(danger?" danger":"");b.type="button";b.textContent=t;b.title=title;b.disabled=!!disabled;b.onclick=fn;return b;}
 
-function sidePicker(current,on){
+function sidePicker(currentGetter,on){
   const wrap=document.createElement("div");wrap.className="side-picker";
   const sides=["top","bottom","north","south","east","west"];
-  const active=splitLoose(current);
+  const active=splitLoose(currentGetter());
   sides.forEach(s=>{
     const btn=document.createElement("button");
     btn.className="side-btn"+(active.includes(s)?" active":"");
@@ -517,33 +542,35 @@ function sidePicker(current,on){
     btn.title=s;
     btn.style.gridArea=s;
     btn.onclick=()=>{
-      let list=splitLoose(current);
+      let list=splitLoose(currentGetter());
       if(list.includes(s)) list=list.filter(x=>x!==s);
       else list.push(s);
-      on(list.join(", "));
+      btn.classList.toggle("active", list.includes(s));
+      on(list.join(", "), true);
     };
     wrap.appendChild(btn);
   });
   return wrap;
 }
 
-function tagPicker(current,on){
+function tagPicker(currentGetter,on){
   const s=currentScript();
   const wrap=document.createElement("div");wrap.className="inline";
   if(!s||!s.tags.length){
     wrap.innerHTML='<div class="note">Create Global Tags in the sidebar first.</div>';
     return wrap;
   }
-  const active=splitLoose(current);
+  const active=splitLoose(currentGetter());
   s.tags.forEach(t=>{
     const btn=document.createElement("button");
     btn.className="tagbtn"+(active.includes(t)?" active":"");
     btn.textContent=t;
     btn.onclick=()=>{
-      let list=splitLoose(current);
+      let list=splitLoose(currentGetter());
       if(list.includes(t)) list=list.filter(x=>x!==t);
       else list.push(t);
-      on(list.join(", "));
+      btn.classList.toggle("active", list.includes(t));
+      on(list.join(", "), true);
     };
     wrap.appendChild(btn);
   });
@@ -552,18 +579,18 @@ function tagPicker(current,on){
 
 function buildBody(b,body){
   if(b.type==="name"){
-    body.appendChild(field("Name",input(b.value,"Program name",v=>{b.value=v;soft(b);}),"The name of the script. Used as default filename on export."));
+    body.appendChild(field("Name",input(b.value,"Program name",v=>{b.value=v;soft(b, true);}),"The name of the script. Used as default filename on export."));
     return;
   }
 
   if(b.type==="trigger"){
-    const mode=select([["interval","Interval"],["redstone","Redstone pulse"]],b.scheduleMode,v=>{b.scheduleMode=v;sync();soft(b);});
+    const mode=select([["interval","Interval"],["redstone","Redstone pulse"]],b.scheduleMode,v=>{b.scheduleMode=v;sync();soft(b, true);});
     body.appendChild(field("Trigger",mode,"How the script execution is triggered."));
-    const val=input(b.intervalValue,"20",v=>{b.intervalValue=v;soft(b);});val.style.maxWidth="70px";
-    const unit=select([["tick","tick"],["ticks","ticks"],["second","second"],["seconds","seconds"]],b.intervalUnit,v=>{b.intervalUnit=v;soft(b);});unit.style.maxWidth="80px";
-    const off=input(b.intervalOffset,"+ offset",v=>{b.intervalOffset=v;soft(b);});off.style.maxWidth="90px";
+    const val=input(b.intervalValue,"20",v=>{b.intervalValue=v;soft(b, true);});val.style.maxWidth="70px";
+    const unit=select([["tick","tick"],["ticks","ticks"],["second","second"],["seconds","seconds"]],b.intervalUnit,v=>{b.intervalUnit=v;soft(b, true);});unit.style.maxWidth="80px";
+    const off=input(b.intervalOffset,"+ offset",v=>{b.intervalOffset=v;soft(b, true);});off.style.maxWidth="90px";
     const line=document.createElement("div");line.className="inline";
-    line.append(val,unit,check(b.intervalGlobal,"GLOBAL",v=>{b.intervalGlobal=v;soft(b);}),off);
+    line.append(val,unit,check(b.intervalGlobal,"GLOBAL",v=>{b.intervalGlobal=v;soft(b, true);}),off);
     const srow=field("Schedule",line,"Execution frequency. GLOBAL means common timer across all triggers.");
     body.appendChild(srow);
     sync();
@@ -574,8 +601,8 @@ function buildBody(b,body){
 
   if(b.type==="input"||b.type==="output"){
     const isOut=b.type==="output";
-    body.appendChild(field("Order",select(isOut?[["action-first","OUTPUT ... TO"],["location-first","TO ... OUTPUT"]]:[["action-first","INPUT ... FROM"],["location-first","FROM ... INPUT"]],b.order,v=>{b.order=v;soft(b);}),"Change syntax order in generated code."));
-    if(isOut) body.appendChild(field("Output",check(b.emptySlots,"EMPTY SLOTS IN",v=>{b.emptySlots=v;soft(b);}),"Only output to empty slots in target containers."));
+    body.appendChild(field("Order",select(isOut?[["action-first","OUTPUT ... TO"],["location-first","TO ... OUTPUT"]]:[["action-first","INPUT ... FROM"],["location-first","FROM ... INPUT"]],b.order,v=>{b.order=v;soft(b, true);}),"Change syntax order in generated code."));
+    if(isOut) body.appendChild(field("Output",check(b.emptySlots,"EMPTY SLOTS IN",v=>{b.emptySlots=v;soft(b, true);}),"Only output to empty slots in target containers."));
 
     const wrap=document.createElement("div");wrap.className="grow";
     b.limits.forEach((lim,idx)=>wrap.appendChild(limitCard(b,lim,idx)));
@@ -584,16 +611,16 @@ function buildBody(b,body){
     wrap.appendChild(add);
     body.appendChild(field("Limits",wrap,"Define items to transfer, quantities, and filters."));
 
-    body.appendChild(field("Except",ta(b.exclusions,"cobblestone, dirt, fluid:lava",v=>{b.exclusions=v;soft(b);}),"Items or fluids to exclude from the transfer."));
-    body.appendChild(field("Inventory Labels",tagPicker(b.labels,v=>{b.labels=v;renderAll();scheduleSave("Labels updated");}),"Targets blocks with these specific labels in the SFM manager."));
-    body.appendChild(field(isOut?"To":"From",check(b.eachLabels,"EACH",v=>{b.eachLabels=v;soft(b);}),"Apply action to EACH labeled container individually."));
-    body.appendChild(field("Round robin",select([["","Disabled"],["label","ROUND ROBIN BY LABEL"],["block","ROUND ROBIN BY BLOCK"]],b.roundRobin,v=>{b.roundRobin=v;soft(b);}),"Distribute items evenly across targets."));
+    body.appendChild(field("Except",ta(b.exclusions,"cobblestone, dirt, fluid:lava",v=>{b.exclusions=v;soft(b, true);}),"Items or fluids to exclude from the transfer."));
+    body.appendChild(field("Inventory Labels",tagPicker(()=>b.labels,v=>{b.labels=v;soft(b, true);}),"Targets blocks with these specific labels in the SFM manager."));
+    body.appendChild(field(isOut?"To":"From",check(b.eachLabels,"EACH",v=>{b.eachLabels=v;soft(b, true);}),"Apply action to EACH labeled container individually."));
+    body.appendChild(field("Round robin",select([["","Disabled"],["label","ROUND ROBIN BY LABEL"],["block","ROUND ROBIN BY BLOCK"]],b.roundRobin,v=>{b.roundRobin=v;soft(b, true);}),"Distribute items evenly across targets."));
 
-    const sm=select([["","No side qualifier"],["listed","Listed sides"],["each","EACH SIDE"]],b.sideMode,v=>{b.sideMode=v;sync();soft(b);});
+    const sm=select([["","No side qualifier"],["listed","Listed sides"],["each","EACH SIDE"]],b.sideMode,v=>{b.sideMode=v;sync();soft(b, true);});
     body.appendChild(field("Sides",sm,"Specify which faces of the target block to interact with."));
-    const slrow=field("Side list",sidePicker(b.sides,v=>{b.sides=v;renderAll();scheduleSave("Sides updated");}),"Select target faces on the block.");
+    const slrow=field("Side list",sidePicker(()=>b.sides,v=>{b.sides=v;soft(b, true);}),"Select target faces on the block.");
     body.appendChild(slrow);
-    body.appendChild(field("Slots",input(b.slots,"0, 1, 3-5",v=>{b.slots=v;soft(b);}),"Specific slot indices or ranges (0-based)."));
+    body.appendChild(field("Slots",input(b.slots,"0, 1, 3-5",v=>{b.slots=v;soft(b, true);}),"Specific slot indices or ranges (0-based)."));
     sync();
     function sync(){slrow.style.display=b.sideMode==="listed"?"flex":"none";}
     return;
@@ -617,10 +644,10 @@ function buildBody(b,body){
   }
 
   if(b.type==="forget"){
-    body.appendChild(field("Inventory Labels",tagPicker(b.labels,v=>{b.labels=v;renderAll();scheduleSave("Labels updated");}),"Clear the specified target labels from memory."));
+    body.appendChild(field("Inventory Labels",tagPicker(()=>b.labels,v=>{b.labels=v;soft(b, true);}),"Clear the specified target labels from memory."));
   }
   if(b.type==="comment"){
-    body.appendChild(field("Comment",ta(b.value,"Type comment here...",v=>{b.value=v;soft(b);})));
+    body.appendChild(field("Comment",ta(b.value,"Type comment here...",v=>{b.value=v;soft(b, true);})));
   }
 }
 
@@ -631,16 +658,16 @@ function limitCard(block,lim,idx){
   rm.onclick=()=>{if(block.limits.length<=1)return;block.limits.splice(idx,1);renderAll();scheduleSave("Limit removed");};
   h.appendChild(rm);c.appendChild(h);
 
-  const q=input(lim.quantity,"1",v=>{lim.quantity=v;soft(block);});q.style.maxWidth="70px";
-  const r=input(lim.retain,"64",v=>{lim.retain=v;soft(block);});r.style.maxWidth="70px";
-  const qrow=document.createElement("div");qrow.className="inline";qrow.append(q,check(lim.quantityEach,"EACH",v=>{lim.quantityEach=v;soft(block);}));
-  const rrow=document.createElement("div");rrow.className="inline";rrow.append(r,check(lim.retainEach,"EACH",v=>{lim.retainEach=v;soft(block);}));
+  const q=input(lim.quantity,"1",v=>{lim.quantity=v;soft(block, true);});q.style.maxWidth="70px";
+  const r=input(lim.retain,"64",v=>{lim.retain=v;soft(block, true);});r.style.maxWidth="70px";
+  const qrow=document.createElement("div");qrow.className="inline";qrow.append(q,check(lim.quantityEach,"EACH",v=>{lim.quantityEach=v;soft(block, true);}));
+  const rrow=document.createElement("div");rrow.className="inline";rrow.append(r,check(lim.retainEach,"EACH",v=>{lim.retainEach=v;soft(block, true);}));
   c.appendChild(field("Quantity",qrow,"How many items to move."));
   c.appendChild(field("Retain",rrow,"How many items to keep in source."));
-  c.appendChild(field("Resources",input(lim.resources,"coal OR charcoal",v=>{lim.resources=v;soft(block);}),"Resource name or pattern (e.g. *iron*)."));
+  c.appendChild(field("Resources",input(lim.resources,"coal OR charcoal",v=>{lim.resources=v;soft(block, true);}),"Resource name or pattern (e.g. *iron*)."));
 
-  const mode=select([["","No WITH filter"],["with","WITH"],["without","WITHOUT"]],lim.withMode,v=>{lim.withMode=v;sync();soft(block);});
-  const clause=ta(lim.withClause,"TAG minecraft:planks",v=>{lim.withClause=v;soft(block);});
+  const mode=select([["","No WITH filter"],["with","WITH"],["without","WITHOUT"]],lim.withMode,v=>{lim.withMode=v;sync();soft(block, true);});
+  const clause=ta(lim.withClause,"TAG minecraft:planks",v=>{lim.withClause=v;soft(block, true);});
   c.appendChild(field("Filter",mode,"Advanced NBT/Tag filtering."));
   const clrow=field("Clause",clause,"Boolean expression for filter.");
   c.appendChild(clrow);
@@ -670,7 +697,7 @@ function branchCard(block,br,idx){
   c.appendChild(h);
   const condLab=document.createElement("div");condLab.className="inline";
   condLab.append(document.createTextNode("Condition"),mini("?","Syntax Help",()=>showConditionHelp()));
-  c.appendChild(field(condLab,ta(br.condition,"OVERALL chest HAS >= 64 iron_ingot",v=>{br.condition=v;soft(block);}),"The boolean expression to test."));
+  c.appendChild(field(condLab,ta(br.condition,"OVERALL chest HAS >= 64 iron_ingot",v=>{br.condition=v;soft(block, true);}),"The boolean expression to test."));
   c.appendChild(zone(idx===0?"Then statements":"Else if statements",br.blocks));
   return c;
 }
@@ -714,8 +741,21 @@ function check(v,label,on){
 function noteEl(text){const d=document.createElement("div");d.className="note";d.textContent=text;return d;}
 function normWs(s){return(s||"").replace(/\s+/g," ").trim();}
 function short(s,n){s=normWs(s);return s.length<=n?s:s.slice(0,n-3)+"...";}
-function soft(b){const el=document.querySelector('.block[data-id="'+b.id+'"] .label');if(el) el.textContent=blockLabel(b);generateCode();scheduleSave("Autosaving...");}
-function blockLabel(b){if(b.type==="name")return'NAME "'+short(b.value||"",28)+'"';if(b.type==="comment")return"-- "+short(b.value||"...",34);if(b.type==="trigger")return triggerHead(b).replace(/\s+DO$/,"");if(b.type==="input")return"INPUT "+short(firstLimit(b)||labelAccess(b)||"...",38);if(b.type==="output")return"OUTPUT "+short(firstLimit(b)||labelAccess(b)||"...",38);if(b.type==="if")return"IF "+short(b.branches[0]?.condition||"TRUE",40);if(b.type==="forget")return b.labels?"FORGET "+short(b.labels,34):"FORGET";return b.type.toUpperCase();}
+function soft(b,noRender){const el=document.querySelector('.block[data-id="'+b.id+'"] .label');if(el) el.innerHTML=highlightLabel(b);generateCode();scheduleSave("Autosaving...");if(!noRender) renderAll();}
+function highlightLabel(b){
+  let code="";
+  if(b.type==="name") code='NAME "'+(b.value||"")+'"';
+  else if(b.type==="comment") code="-- "+(b.value||"...");
+  else if(b.type==="trigger") code=triggerHead(b).replace(/\s+DO$/,"");
+  else if(b.type==="input"||b.type==="output"){
+    const lines = ioLines(b,0);
+    code = lines.join(" ").trim();
+  }
+  else if(b.type==="if") code="IF "+(b.branches[0]?.condition||"TRUE");
+  else if(b.type==="forget") code=b.labels?"FORGET "+splitLoose(b.labels).join(", "):"FORGET";
+  else code=b.type.toUpperCase();
+  return highlight(code);
+}
 function firstLimit(b){const x=b.limits.map(formatLimit).filter(Boolean);return x[0]||"";}
 
 function generateCode(){
@@ -1154,6 +1194,12 @@ function clearAll(){
   blocks=s.blocks;
   renderAll();
   scheduleSave("Current script cleared");
+}
+
+function toggleAllBlocks(collapsed){
+  walk(blocks, b => { b.collapsed = collapsed; });
+  renderAll();
+  scheduleSave(collapsed ? "All blocks collapsed" : "All blocks expanded");
 }
 </script>
 </body>
