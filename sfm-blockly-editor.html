@@ -19,14 +19,21 @@
   .check{display:inline-flex;align-items:center;gap:6px;min-height:32px;font-size:12px;color:var(--tx2)}.check input{accent-color:var(--ac)}.inline{display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex:1}.note{font-size:11px;line-height:1.5;color:var(--tx3)}
   .scripts{display:flex;flex-direction:column;gap:6px;margin-top:10px}.script{width:100%;text-align:left;padding:10px;cursor:pointer}.script.active{border-color:var(--ac)}.sname{font-size:12px;font-weight:700;margin-bottom:4px}.smeta{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--tx3)}
   .pblock{padding:9px 10px;border-radius:6px;margin-bottom:6px;cursor:grab;border:1px solid transparent;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;user-select:none}.pblock:hover{transform:translateX(2px)}.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .gtag{background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:var(--tx2);display:flex;align-items:center;gap:4px;cursor:default}.gtag .x{cursor:pointer;opacity:.5}.gtag .x:hover{opacity:1;color:var(--red)}
+  .tagbtn{background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:4px 8px;font-size:11px;font-weight:700;color:var(--tx2);cursor:pointer}.tagbtn:hover{background:var(--bg4);border-color:var(--bd2)}.tagbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+  .side-picker{display:grid;grid-template-areas:". top ." "west north east" ". south ." ". bottom .";gap:4px;width:fit-content;padding:8px;background:var(--bg2);border-radius:8px;border:1px solid var(--bd)}
+  .side-btn{width:32px;height:32px;border:1px solid var(--bd);background:var(--bg3);color:var(--tx3);font-size:10px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;text-transform:uppercase}
+  .side-btn:hover{background:var(--bg4);color:var(--tx2)}
+  .side-btn.active{background:var(--ac);border-color:var(--ac);color:#fff}
   .pb-name{background:var(--nm);border-color:var(--nmb);color:var(--nma)}.pb-name .dot{background:var(--nma)}.pb-trigger{background:var(--tr);border-color:var(--trb);color:var(--tra)}.pb-trigger .dot{background:var(--tra)}.pb-input{background:var(--in);border-color:var(--inb);color:var(--ina)}.pb-input .dot{background:var(--ina)}.pb-output{background:var(--out);border-color:var(--outb);color:var(--outa)}.pb-output .dot{background:var(--outa)}.pb-if{background:var(--if);border-color:var(--ifb);color:var(--ifa)}.pb-if .dot{background:var(--ifa)}.pb-forget{background:var(--fg);border-color:var(--fgb);color:var(--fga)}.pb-forget .dot{background:var(--fga)}
   #empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 20px;min-height:320px;color:var(--tx3);text-align:center}#empty h3{font-size:16px;color:var(--tx2)}#empty p{font-size:13px;line-height:1.7;max-width:320px}#canvas.drag{background:var(--bg3)}
+  .zone.drag-over{border-color:var(--ac);background:var(--bg4)}
   .block{border-radius:8px;border:1.5px solid var(--bd);background:var(--bg2)}.tr{border-color:var(--trb)}.in{border-color:var(--inb)}.outb{border-color:var(--outb)}.iff{border-color:var(--ifb)}.fgb{border-color:var(--fgb)}.nmb{border-color:var(--nmb)}
   .head{display:flex;align-items:center;gap:8px;padding:9px 10px;position:relative}.tr>.head{background:var(--tr)}.in>.head{background:var(--in)}.outb>.head{background:var(--out)}.iff>.head{background:var(--if)}.fgb>.head{background:var(--fg)}.nmb>.head{background:var(--nm)}
   .accent{width:3px;height:calc(100% - 12px);position:absolute;left:0;top:6px;border-radius:2px}.tr .accent{background:var(--tra)}.in .accent{background:var(--ina)}.outb .accent{background:var(--outa)}.iff .accent{background:var(--ifa)}.fgb .accent{background:var(--fga)}.nmb .accent{background:var(--nma)}
   .toggle,.mini{width:22px;height:22px;background:transparent;border:1px solid transparent;color:var(--tx3);cursor:pointer;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}.mini.danger:hover{background:var(--fg);border-color:var(--fgb);color:var(--red)}
   .label{flex:1;padding-left:6px;font-size:12px;font-weight:800;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tr .label{color:var(--tra)}.in .label{color:var(--ina)}.outb .label{color:var(--outa)}.iff .label{color:var(--ifa)}.fgb .label{color:var(--fga)}.nmb .label{color:var(--nma)}.actions{display:flex;gap:4px}.body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}.collapsed .body{display:none}.collapsed .toggle{transform:rotate(-90deg)}
-  .card,.zone{border:1px solid var(--bd);border-radius:7px;background:var(--bg3);padding:9px;display:flex;flex-direction:column;gap:8px}.cardhead,.zonehead{display:flex;align-items:center;justify-content:space-between;gap:8px}.tag{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}.zoneitems{display:flex;flex-direction:column;gap:8px}.zoneempty{padding:10px;border:1px dashed var(--bd);border-radius:6px;text-align:center;color:var(--tx3);font-size:11px}.add{display:flex;flex-wrap:wrap;gap:6px}
+  .card,.zone{border:1px solid var(--bd);border-left:4px solid var(--bd2);border-radius:7px;background:var(--bg3);padding:9px;padding-left:14px;display:flex;flex-direction:column;gap:8px}.cardhead,.zonehead{display:flex;align-items:center;justify-content:space-between;gap:8px}.tag{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}.zoneitems{display:flex;flex-direction:column;gap:8px}.zoneempty{padding:10px;border:1px dashed var(--bd);border-radius:6px;text-align:center;color:var(--tx3);font-size:11px}.add{display:flex;flex-wrap:wrap;gap:6px}
   #codehead{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}#codetitle{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#out{flex:1;overflow:auto;padding:14px;background:var(--code);font:12px/1.7 JetBrains Mono,monospace;white-space:pre;tab-size:4}
   .tk{color:var(--tra);font-weight:700}.kw{color:var(--outa)}.kw2{color:var(--ina)}.kw3{color:var(--ifa)}.str{color:var(--teal)}.num{color:var(--amber)}.cmt{color:var(--tx3);font-style:italic}.item{color:var(--pink)}
   @media (max-width:980px){#main{flex-direction:column}#side,#code{width:100%;border:0;border-bottom:1px solid var(--bd)}#side{max-height:38vh}#code{max-height:32vh}#status{display:none}}
@@ -61,8 +68,15 @@
       <div id="scriptList" class="scripts"></div>
     </div>
     <div class="sec">
+      <div class="title">Global Tags</div>
+      <div class="row" style="margin-bottom:8px">
+        <input id="newTagName" class="inp" type="text" placeholder="New tag" style="width:0;flex:1">
+        <button class="fieldbtn" onclick="const i=document.getElementById('newTagName');addTag(i.value);i.value=''">Add</button>
+      </div>
+      <div id="globalTags" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+    </div>
+    <div class="sec">
       <div class="title">Structure</div>
-      <div class="pblock pb-name" draggable="true" onclick="onPaletteClick('name')" ondragstart="onPaletteDragStart(event,'name')"><div class="dot"></div>Program Name</div>
       <div class="pblock pb-trigger" draggable="true" onclick="onPaletteClick('trigger')" ondragstart="onPaletteDragStart(event,'trigger')"><div class="dot"></div>Trigger</div>
     </div>
     <div class="sec">
@@ -133,6 +147,7 @@ function normScript(s){
     id:typeof s.id==="string"?s.id:scriptId(),
     name:typeof s.name==="string"?s.name:"",
     updatedAt:Number.isFinite(s.updatedAt)?s.updatedAt:Date.now(),
+    tags:Array.isArray(s.tags)?s.tags.filter(t=>typeof t==="string"):[],
     blocks:Array.isArray(s.blocks)?s.blocks.map(normBlock).filter(Boolean):[]
   };
 }
@@ -190,7 +205,7 @@ function refreshIds(){let max=0;app.scripts.forEach(s=>walk(s.blocks,b=>{const m
 function uid(){idCounter+=1;return"b"+idCounter;}
 function scriptId(){return"script_"+Math.random().toString(36).slice(2,10);}
 function nextUntitled(){const n="Untitled "+app.nextUntitled;app.nextUntitled+=1;return n;}
-function createScript(name,init){return{id:scriptId(),name,updatedAt:Date.now(),blocks:init||[]};}
+function createScript(name,init){return{id:scriptId(),name,updatedAt:Date.now(),tags:[],blocks:init||[]};}
 function currentScript(){return app.scripts.find(s=>s.id===app.currentScriptId)||null;}
 function currentName(){const s=currentScript();return s?.name?.trim()?s.name.trim():"Untitled script";}
 
@@ -242,6 +257,43 @@ function persistNow(){
     console.error(e);
     saveStatus("Autosave failed");
   }
+}
+
+function updateTags(tags){
+  const s=currentScript();
+  if(!s) return;
+  s.tags=tags;
+  renderAll();
+  scheduleSave("Tags updated");
+}
+
+function addTag(name){
+  const s=currentScript();
+  if(!s||!name.trim()) return;
+  const n=name.trim();
+  if(!s.tags.includes(n)){
+    s.tags.push(n);
+    renderScriptList();
+    renderAll();
+    scheduleSave("Tag added");
+  }
+}
+
+function removeTag(n){
+  const s=currentScript();
+  if(!s) return;
+  s.tags=s.tags.filter(t=>t!==n);
+  // Also remove from blocks? The prompt says "they must be global to the script in progress"
+  // If we remove a global tag, it should probably be removed from all blocks that use it.
+  walk(s.blocks, b => {
+    if(b.labels) {
+      const labels = splitLoose(b.labels).filter(l => l !== n);
+      b.labels = labels.join(", ");
+    }
+  });
+  renderScriptList();
+  renderAll();
+  scheduleSave("Tag removed");
 }
 
 function scheduleSave(msg){
@@ -335,7 +387,37 @@ function onPaletteClick(type){addRoot(type);}
 function onPaletteDragStart(e,type){dragType=type;e.dataTransfer.effectAllowed="copy";}
 function onCanvasDragOver(e){e.preventDefault();document.getElementById("canvas").classList.add("drag");}
 function onCanvasDragLeave(){document.getElementById("canvas").classList.remove("drag");}
-function onCanvasDrop(e){e.preventDefault();document.getElementById("canvas").classList.remove("drag");if(!dragType) return;addRoot(dragType);dragType=null;}
+function onCanvasDrop(e){
+  e.preventDefault();
+  document.getElementById("canvas").classList.remove("drag");
+  if(!dragType) return;
+  if(STATEMENTS.includes(dragType)){
+    saveStatus("Add Input / Output / If / Forget inside a trigger or an IF branch.");
+  } else {
+    addRoot(dragType);
+  }
+  dragType=null;
+}
+
+function onZoneDragOver(e){
+  if(dragType && STATEMENTS.includes(dragType)){
+    e.preventDefault();
+    e.stopPropagation();
+    e.currentTarget.classList.add("drag-over");
+  }
+}
+function onZoneDragLeave(e){
+  e.currentTarget.classList.remove("drag-over");
+}
+function onZoneDrop(e, arr){
+  if(dragType && STATEMENTS.includes(dragType)){
+    e.preventDefault();
+    e.stopPropagation();
+    e.currentTarget.classList.remove("drag-over");
+    addStatement(arr, dragType);
+    dragType=null;
+  }
+}
 
 function addRoot(type){
   if(!ROOT_TYPES.has(type)){saveStatus("Add Input / Output / If / Forget inside a trigger or an IF branch.");return;}
@@ -356,7 +438,23 @@ function renderAll(){
   [...c.children].forEach(x=>x.id!=="empty"&&x.remove());
   blocks.forEach((b,i)=>c.appendChild(renderBlock(b,blocks,i)));
   document.getElementById("codetitle").textContent="Generated SFM - "+currentName();
+  renderGlobalTags();
   generateCode();
+}
+
+function renderGlobalTags(){
+  const s=currentScript();
+  const box=document.getElementById("globalTags");
+  if(!s||!box) return;
+  box.innerHTML="";
+  if(!s.tags.length) box.innerHTML='<div class="note">No global tags defined.</div>';
+  s.tags.forEach(t=>{
+    const el=document.createElement("div");
+    el.className="gtag";
+    el.innerHTML='<span>'+escText(t)+'</span><span class="x" title="Delete tag">×</span>';
+    el.querySelector(".x").onclick=()=>removeTag(t);
+    box.appendChild(el);
+  });
 }
 
 function renderBlock(b,arr,i){
@@ -400,6 +498,50 @@ function renderBlock(b,arr,i){
 function cls(type){return({name:"nmb",trigger:"tr",input:"in",output:"outb",if:"iff",forget:"fgb"})[type]||"";}
 function mini(t,title,fn,disabled,danger){const b=document.createElement("button");b.className="mini"+(danger?" danger":"");b.type="button";b.textContent=t;b.title=title;b.disabled=!!disabled;b.onclick=fn;return b;}
 
+function sidePicker(current,on){
+  const wrap=document.createElement("div");wrap.className="side-picker";
+  const sides=["top","bottom","north","south","east","west"];
+  const active=splitLoose(current);
+  sides.forEach(s=>{
+    const btn=document.createElement("button");
+    btn.className="side-btn"+(active.includes(s)?" active":"");
+    btn.textContent=s.slice(0,1);
+    btn.title=s;
+    btn.style.gridArea=s;
+    btn.onclick=()=>{
+      let list=splitLoose(current);
+      if(list.includes(s)) list=list.filter(x=>x!==s);
+      else list.push(s);
+      on(list.join(", "));
+    };
+    wrap.appendChild(btn);
+  });
+  return wrap;
+}
+
+function tagPicker(current,on){
+  const s=currentScript();
+  const wrap=document.createElement("div");wrap.className="inline";
+  if(!s||!s.tags.length){
+    wrap.innerHTML='<div class="note">Create Global Tags in the sidebar first.</div>';
+    return wrap;
+  }
+  const active=splitLoose(current);
+  s.tags.forEach(t=>{
+    const btn=document.createElement("button");
+    btn.className="tagbtn"+(active.includes(t)?" active":"");
+    btn.textContent=t;
+    btn.onclick=()=>{
+      let list=splitLoose(current);
+      if(list.includes(t)) list=list.filter(x=>x!==t);
+      else list.push(t);
+      on(list.join(", "));
+    };
+    wrap.appendChild(btn);
+  });
+  return wrap;
+}
+
 function buildBody(b,body){
   if(b.type==="name"){
     body.appendChild(field("Name",input(b.value,"Program name",v=>{b.value=v;soft(b);})));
@@ -415,11 +557,12 @@ function buildBody(b,body){
     const off=input(b.intervalOffset,"+ offset",v=>{b.intervalOffset=v;soft(b);});off.style.maxWidth="110px";
     const line=document.createElement("div");line.className="inline";
     line.append(val,unit,check(b.intervalGlobal,"GLOBAL",v=>{b.intervalGlobal=v;soft(b);}),off);
-    body.appendChild(field("Schedule",line));
+    const srow=field("Schedule",line);
+    body.appendChild(srow);
     sync();
     body.appendChild(zone("Statements",b.children));
     body.appendChild(noteEl("Supports EVERY <n> [GLOBAL] [+ offset] TICK(S) / SECOND(S) DO and EVERY REDSTONE PULSE DO."));
-    function sync(){const dis=b.scheduleMode==="redstone";val.disabled=dis;unit.disabled=dis;off.disabled=dis;}
+    function sync(){const dis=b.scheduleMode==="redstone";srow.style.display=dis?"none":"flex";}
     return;
   }
 
@@ -436,18 +579,18 @@ function buildBody(b,body){
     body.appendChild(field("Limits",wrap));
 
     body.appendChild(field("Except",ta(b.exclusions,"cobblestone, dirt, fluid:lava",v=>{b.exclusions=v;soft(b);})));
-    body.appendChild(field("Labels",input(b.labels,'furnace, "Fuel Chest"',v=>{b.labels=v;soft(b);})));
+    body.appendChild(field("Labels",tagPicker(b.labels,v=>{b.labels=v;renderAll();scheduleSave("Labels updated");})));
     body.appendChild(field(isOut?"To":"From",check(b.eachLabels,"EACH",v=>{b.eachLabels=v;soft(b);})));
     body.appendChild(field("Round robin",select([["","Disabled"],["label","ROUND ROBIN BY LABEL"],["block","ROUND ROBIN BY BLOCK"]],b.roundRobin,v=>{b.roundRobin=v;soft(b);})));
 
     const sm=select([["","No side qualifier"],["listed","Listed sides"],["each","EACH SIDE"]],b.sideMode,v=>{b.sideMode=v;sync();soft(b);});
     body.appendChild(field("Sides",sm));
-    const sides=input(b.sides,"top, north, west",v=>{b.sides=v;soft(b);});
-    body.appendChild(field("Side list",sides));
+    const slrow=field("Side list",sidePicker(b.sides,v=>{b.sides=v;renderAll();scheduleSave("Sides updated");}));
+    body.appendChild(slrow);
     body.appendChild(field("Slots",input(b.slots,"0, 1, 3-5",v=>{b.slots=v;soft(b);})));
     sync();
     body.appendChild(noteEl("Supports multiple limits, OR resource lists, WITH / WITHOUT clauses, EXCEPT lists, ROUND ROBIN, side qualifiers, and slots."));
-    function sync(){sides.disabled=b.sideMode!=="listed";}
+    function sync(){slrow.style.display=b.sideMode==="listed"?"flex":"none";}
     return;
   }
 
@@ -475,7 +618,7 @@ function buildBody(b,body){
   }
 
   if(b.type==="forget"){
-    body.appendChild(field("Labels",input(b.labels,"leave blank to clear current inputs only",v=>{b.labels=v;soft(b);})));
+    body.appendChild(field("Labels",tagPicker(b.labels,v=>{b.labels=v;renderAll();scheduleSave("Labels updated");})));
     body.appendChild(noteEl("FORGET alone clears current inputs. FORGET label1, label2 also clears named labels."));
   }
 }
@@ -498,9 +641,10 @@ function limitCard(block,lim,idx){
   const mode=select([["","No WITH filter"],["with","WITH"],["without","WITHOUT"]],lim.withMode,v=>{lim.withMode=v;sync();soft(block);});
   const clause=ta(lim.withClause,"TAG minecraft:planks AND NOT TAG minecraft:logs",v=>{lim.withClause=v;soft(block);});
   c.appendChild(field("Filter",mode));
-  c.appendChild(field("Clause",clause));
+  const clrow=field("Clause",clause);
+  c.appendChild(clrow);
   sync();
-  function sync(){clause.disabled=!lim.withMode;}
+  function sync(){clrow.style.display=lim.withMode?"flex":"none";}
   return c;
 }
 
@@ -520,6 +664,9 @@ function branchCard(block,br,idx){
 
 function zone(title,arr){
   const z=document.createElement("div");z.className="zone";
+  z.ondragover=e=>onZoneDragOver(e);
+  z.ondragleave=e=>onZoneDragLeave(e);
+  z.ondrop=e=>onZoneDrop(e,arr);
   const h=document.createElement("div");h.className="zonehead";h.innerHTML='<div class="tag">'+title+'</div>';z.appendChild(h);
   const items=document.createElement("div");items.className="zoneitems";
   if(!arr.length){const e=document.createElement("div");e.className="zoneempty";e.textContent="No statements yet.";items.appendChild(e);}
@@ -532,6 +679,7 @@ function zone(title,arr){
 }
 
 function field(label,control){const row=document.createElement("div");row.className="row";const l=document.createElement("div");l.className="lab";l.textContent=label;row.append(l,control);return row;}
+function row(label,control){const f=field(label,control);return f;}
 function input(v,p,on){const e=document.createElement("input");e.type="text";e.className="inp";e.value=v||"";e.placeholder=p||"";e.spellcheck=false;e.oninput=()=>on(e.value);return e;}
 function ta(v,p,on){const e=document.createElement("textarea");e.className="ta";e.value=v||"";e.placeholder=p||"";e.rows=3;e.spellcheck=false;e.oninput=()=>on(e.value);return e;}
 function select(opts,v,on){const e=document.createElement("select");e.className="sel";opts.forEach(([ov,lab])=>{const o=document.createElement("option");o.value=ov;o.textContent=lab;e.appendChild(o);});e.value=v;e.onchange=()=>on(e.value);return e;}
@@ -545,6 +693,8 @@ function firstLimit(b){const x=b.limits.map(formatLimit).filter(Boolean);return 
 
 function generateCode(){
   const chunks=[];
+  const sname = currentName();
+  if(sname) chunks.push('NAME "'+escQuote(sname)+'"');
   blocks.forEach(b=>{const lines=toLines(b,0);if(lines.length) chunks.push(lines.join("\n"));});
   lastCode=chunks.join("\n\n").trim();
   document.getElementById("out").innerHTML=lastCode?highlight(lastCode):'<span class="cmt">-- Start building to see code</span>';
@@ -552,7 +702,7 @@ function generateCode(){
 
 function toLines(b,depth){
   const I="    ".repeat(depth);
-  if(b.type==="name") return [I+'NAME "'+escQuote(b.value||"Program")+'"'];
+  if(b.type==="name") return [];
   if(b.type==="trigger"){
     const lines=[I+triggerHead(b)];
     b.children.forEach(x=>lines.push(...toLines(x,depth+1)));
@@ -657,22 +807,22 @@ function escHtml(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(
 function escText(s){return escHtml(String(s));}
 
 function highlight(code){
-  const stash=[],hold=html=>{stash.push(html);return"@@"+(stash.length-1)+"@@";};
+  const stash=[],hold=html=>{stash.push(html);return"HLHLD"+(stash.length-1)+"HLHLD";};
   let h=escHtml(code);
   h=h.replace(/"([^"\\]|\\.)*"/g,m=>hold('<span class="str">'+m+"</span>"));
   h=h.replace(/--[^\n]*/g,m=>hold('<span class="cmt">'+m+"</span>"));
-  h=h.replace(/\b\d+\b/g,'<span class="num">$&</span>');
+  h=h.replace(/\b\d+\b/g,m=>hold('<span class="num">'+m+'</span>'));
   h=h.replace(/\b(EVERY|GLOBAL|DO|END|REDSTONE|PULSE|TICKS|TICK|SECONDS|SECOND|INPUT|OUTPUT|FROM|TO|IF|THEN|ELSE|FORGET|NAME|RETAIN|EACH|EXCEPT|WITH|WITHOUT|TAG|ROUND|ROBIN|BY|LABEL|BLOCK|SLOTS|SLOT|SIDE|TOP|BOTTOM|NORTH|EAST|SOUTH|WEST|LEFT|RIGHT|FRONT|BACK|NULL|HAS|OVERALL|SOME|ONE|LONE|TRUE|FALSE|NOT|AND|OR|EMPTY|IN)\b/gi,t=>{
     const u=t.toUpperCase();
-    if(["EVERY","GLOBAL","DO","END","REDSTONE","PULSE","TICKS","TICK","SECONDS","SECOND"].includes(u)) return '<span class="tk">'+t+"</span>";
-    if(["INPUT","FROM"].includes(u)) return '<span class="kw2">'+t+"</span>";
-    if(["OUTPUT","TO","EMPTY","IN"].includes(u)) return '<span class="kw">'+t+"</span>";
-    if(["IF","THEN","ELSE","TRUE","FALSE","NOT","AND","OR","HAS","OVERALL","SOME","ONE","LONE"].includes(u)) return '<span class="kw3">'+t+"</span>";
-    if(["RETAIN","EACH","EXCEPT","WITH","WITHOUT","TAG","ROUND","ROBIN","BY","LABEL","BLOCK","SLOTS","SLOT","SIDE","TOP","BOTTOM","NORTH","EAST","SOUTH","WEST","LEFT","RIGHT","FRONT","BACK","NULL","FORGET","NAME"].includes(u)) return '<span class="item">'+t+"</span>";
+    if(["EVERY","GLOBAL","DO","END","REDSTONE","PULSE","TICKS","TICK","SECONDS","SECOND"].includes(u)) return hold('<span class="tk">'+t+"</span>");
+    if(["INPUT","FROM"].includes(u)) return hold('<span class="kw2">'+t+"</span>");
+    if(["OUTPUT","TO","EMPTY","IN"].includes(u)) return hold('<span class="kw">'+t+"</span>");
+    if(["IF","THEN","ELSE","TRUE","FALSE","NOT","AND","OR","HAS","OVERALL","SOME","ONE","LONE"].includes(u)) return hold('<span class="kw3">'+t+"</span>");
+    if(["RETAIN","EACH","EXCEPT","WITH","WITHOUT","TAG","ROUND","ROBIN","BY","LABEL","BLOCK","SLOTS","SLOT","SIDE","TOP","BOTTOM","NORTH","EAST","SOUTH","WEST","LEFT","RIGHT","FRONT","BACK","NULL","FORGET","NAME"].includes(u)) return hold('<span class="item">'+t+"</span>");
     return t;
   });
-  h=h.replace(/(&gt;=|&lt;=|&gt;|&lt;|=|\bGT\b|\bGE\b|\bLT\b|\bLE\b|\bEQ\b)/g,'<span class="item">$1</span>');
-  return h.replace(/@@(\d+)@@/g,(_,i)=>stash[+i]);
+  h=h.replace(/(&gt;=|&lt;=|&gt;|&lt;|=|\bGT\b|\bGE\b|\bLT\b|\bLE\b|\bEQ\b)/g,m=>hold('<span class="item">'+m+'</span>'));
+  return h.replace(/HLHLD(\d+)HLHLD/g,(_,i)=>stash[+i]);
 }
 
 function copyCode(){
