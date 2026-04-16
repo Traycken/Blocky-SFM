@@ -90,14 +90,10 @@
     </div>
   </div>
   <div id="canvas" ondragover="onCanvasDragOver(event)" ondrop="onCanvasDrop(event)" ondragleave="onCanvasDragLeave(event)">
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button class="btn primary" onclick="addRoot('trigger')">+ Add Trigger</button>
-      <button class="btn" onclick="addRoot('comment')">+ Add Comment</button>
-    </div>
     <div id="empty">
       <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="12" width="56" height="40" rx="6" stroke="currentColor" stroke-width="2" stroke-dasharray="5 3"/><rect x="12" y="20" width="16" height="10" rx="3" fill="currentColor" opacity=".3"/><rect x="36" y="20" width="16" height="10" rx="3" fill="currentColor" opacity=".3"/><rect x="12" y="34" width="40" height="10" rx="3" fill="currentColor" opacity=".2"/></svg>
-      <h3>Drop top-level blocks here</h3>
-      <p>Start with <strong>Program Name</strong> or <strong>Trigger</strong>. Statements are added inside triggers and IF branches.</p>
+      <h3>Canvas is empty</h3>
+      <p>Use the buttons below to add <strong>Triggers</strong>, <strong>Comments</strong> or <strong>Inputs</strong>.</p>
     </div>
   </div>
   <div id="resizer" class="drag-handle"></div>
@@ -107,7 +103,7 @@
   </div>
 </div>
 <script>
-const STORAGE_KEY="sfm-blockly-editor-v3",ROOT_TYPES=new Set(["name","trigger","comment"]),STATEMENTS=["input","output","if","forget","comment"];
+const STORAGE_KEY="sfm-blockly-editor-v3",ROOT_TYPES=new Set(["name","trigger","comment","input","output","if","forget"]),STATEMENTS=["input","output","if","forget","comment"];
 let dragType=null,draggedBlock=null,idCounter=0,blocks=[],saveTimer=null,lastCode="";
 const app=loadState();init();
 
@@ -455,6 +451,23 @@ function renderAll(){
   empty.style.display=blocks.length?"none":"flex";
   [...c.children].forEach(x=>x.id!=="empty"&&x.remove());
   blocks.forEach((b,i)=>c.appendChild(renderBlock(b,blocks,i)));
+
+  const foot = document.createElement("div");
+  foot.style.display="flex"; foot.style.flexWrap="wrap"; foot.style.gap="8px"; foot.style.paddingTop="12px"; foot.style.marginTop="20px";
+  const btn = (t, type, p) => {
+    const b = document.createElement("button"); b.className="btn" + (p?" primary":""); b.textContent=t; b.onclick=()=>addRoot(type); return b;
+  };
+  foot.append(
+    btn("ADD TRIGGER", "trigger", 1),
+    btn("ADD COMMENT", "comment"),
+    btn("ADD INPUT", "input"),
+    btn("ADD OUTPUT", "output"),
+    btn("ADD IF", "if"),
+    btn("ADD FORGET", "forget")
+  );
+  c.appendChild(foot);
+
+
   document.getElementById("codetitle").textContent="Generated SFM - "+currentName();
   renderGlobalTags();
   generateCode();
