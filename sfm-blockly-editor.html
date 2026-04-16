@@ -33,7 +33,7 @@
   .accent{width:3px;height:calc(100% - 12px);position:absolute;left:0;top:6px;border-radius:2px}.tr .accent{background:var(--tra)}.in .accent{background:var(--ina)}.outb .accent{background:var(--outa)}.iff .accent{background:var(--ifa)}.fgb .accent{background:var(--fga)}.nmb .accent{background:var(--nma)}.cmtblk .accent{background:var(--tx3)}
   .toggle,.mini{width:22px;height:22px;background:transparent;border:1px solid transparent;color:var(--tx3);cursor:pointer;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}.mini.danger:hover{background:var(--fg);border-color:var(--fgb);color:var(--red)}
   .label{flex:1;padding-left:6px;font-size:12px;font-weight:800;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tr .label{color:var(--tra)}.in .label{color:var(--ina)}.outb .label{color:var(--outa)}.iff .label{color:var(--ifa)}.fgb .label{color:var(--fga)}.nmb .label{color:var(--nma)}.actions{display:flex;gap:4px}.body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}.collapsed .body{display:none}.collapsed .toggle{transform:rotate(-90deg)}
-  .card,.zone{border:1px solid var(--bd);border-left:4px solid var(--bd2);border-radius:7px;background:var(--bg3);padding:9px;padding-left:14px;display:flex;flex-direction:column;gap:8px}.cardhead,.zonehead{display:flex;align-items:center;justify-content:space-between;gap:8px}.tag{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}.zoneitems{display:flex;flex-direction:column;gap:8px}.zoneempty{padding:10px;border:1px dashed var(--bd);border-radius:6px;text-align:center;color:var(--tx3);font-size:11px}.add{display:flex;flex-wrap:wrap;gap:6px}
+  .card,.zone{border:1px solid var(--bd);border-left:6px solid var(--bd2);border-radius:8px;background:var(--bg3);padding:12px;padding-left:20px;display:flex;flex-direction:column;gap:10px;margin-bottom:4px}.cardhead,.zonehead{display:flex;align-items:center;justify-content:space-between;gap:8px}.tag{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}.zoneitems{display:flex;flex-direction:column;gap:10px}.zoneempty{padding:12px;border:1px dashed var(--bd);border-radius:6px;text-align:center;color:var(--tx3);font-size:11px}.add{display:flex;flex-wrap:wrap;gap:6px}
   #codehead{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}#codetitle{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#out{flex:1;overflow:auto;padding:14px;background:var(--code);font:12px/1.7 JetBrains Mono,monospace;white-space:pre;tab-size:4}
   .tk{color:var(--tra);font-weight:700}.kw{color:var(--outa)}.kw2{color:var(--ina)}.kw3{color:var(--ifa)}.str{color:var(--teal)}.num{color:var(--amber)}.cmt{color:var(--tx3);font-style:italic}.item{color:var(--pink)}
   @media (max-width:980px){#main{flex-direction:column}#side,#code{width:100%;border:0;border-bottom:1px solid var(--bd)}#side{max-height:38vh}#code{max-height:32vh}#status{display:none}}
@@ -857,122 +857,171 @@ function copyCode(){
 
 function heuristicParseSFM(text){
   const lines = text.split(/\r?\n/);
-  let name = "Imported Script";
+  let name = "";
   const tags = new Set();
   const blocks = [];
-  const stack = [{blocks: blocks}]; // Stack of containers
+  const stack = [{blocks: blocks}];
+  let activeIO = null;
 
   function current() { return stack[stack.length - 1]; }
 
   for(let line of lines){
-    const trimmed = line.trim();
+    let trimmed = line.trim();
     if(!trimmed) continue;
 
-    // Name
     const nameMatch = trimmed.match(/^(?:NAME|\{name)\s+"?([^"}]+)"?/i);
     if(nameMatch && stack.length === 1){
       name = nameMatch[1];
       continue;
     }
 
-    // Comment
     if(trimmed.startsWith("--")){
       const c = createBlock("comment");
       c.value = trimmed.slice(2).trim();
       current().blocks.push(c);
+      activeIO = null;
       continue;
     }
 
-    // Trigger
-    const everyMatch = trimmed.match(/^EVERY\s+(.+)\s+DO/i);
-    if(everyMatch){
+    const upper = trimmed.toUpperCase();
+
+    if(upper.startsWith("EVERY ")){
       const t = createBlock("trigger");
-      const val = everyMatch[1].toUpperCase();
+      const val = upper.slice(6).replace(" DO","");
       if(val === "REDSTONE PULSE"){
         t.scheduleMode = "redstone";
       } else {
         t.scheduleMode = "interval";
-        const parts = everyMatch[1].split(/\s+/);
-        // simplistic extraction: find a number, find GLOBAL, find unit
+        const parts = val.split(/\s+/);
         t.intervalValue = parts.find(p => /^\d+$/.test(p)) || "20";
-        t.intervalUnit = parts.find(p => ["TICKS","TICK","SECONDS","SECOND"].includes(p.toUpperCase()))?.toLowerCase() || "ticks";
-        t.intervalGlobal = parts.some(p => p.toUpperCase() === "GLOBAL");
+        t.intervalUnit = parts.find(p => ["TICKS","TICK","SECONDS","SECOND"].includes(p))?.toLowerCase() || "ticks";
+        t.intervalGlobal = parts.includes("GLOBAL");
       }
       current().blocks.push(t);
       stack.push({type: "trigger", block: t, blocks: t.children});
+      activeIO = null;
       continue;
     }
 
-    // IF
-    const ifMatch = trimmed.match(/^(?:ELSE IF|IF)\s+(.+)\s+THEN/i);
-    if(ifMatch){
-      const isElseIf = trimmed.toUpperCase().startsWith("ELSE IF");
-      if(isElseIf && current().type === "if"){
-        const br = makeBranch(ifMatch[1]);
-        current().block.branches.push(br);
-        stack.push({type: "branch", blocks: br.blocks});
+    if(upper.startsWith("IF ") || upper.startsWith("ELSE IF ")){
+      const isElseIf = upper.startsWith("ELSE IF ");
+      const cond = trimmed.replace(/^(?:ELSE IF|IF)\s+/i, "").replace(/\s+THEN$/i, "");
+      if(isElseIf && (current().type === "if" || stack[stack.length-2]?.type === "if")){
+         if(current().type === "branch") stack.pop();
+         const br = makeBranch(cond);
+         current().block.branches.push(br);
+         stack.push({type: "branch", blocks: br.blocks});
       } else {
-        const i = createBlock("if");
-        i.branches[0].condition = ifMatch[1];
-        current().blocks.push(i);
-        stack.push({type: "if", block: i});
-        stack.push({type: "branch", blocks: i.branches[0].blocks});
+         const i = createBlock("if");
+         i.branches[0].condition = cond;
+         current().blocks.push(i);
+         stack.push({type: "if", block: i});
+         stack.push({type: "branch", blocks: i.branches[0].blocks});
       }
+      activeIO = null;
       continue;
     }
 
-    // ELSE
-    if(trimmed.toUpperCase() === "ELSE" && (current().type === "if" || (stack[stack.length-2]?.type === "if"))){
+    if(upper === "ELSE" && (current().type === "if" || stack[stack.length-2]?.type === "if")){
       if(current().type === "branch") stack.pop();
       const i = current().block;
       i.hasElse = true;
       stack.push({type: "else", blocks: i.elseBlocks});
+      activeIO = null;
       continue;
     }
 
-    // END
-    if(trimmed.toUpperCase() === "END"){
+    if(upper === "END"){
       if(stack.length > 1){
         if(["branch","else"].includes(current().type)) stack.pop();
         stack.pop();
       }
+      activeIO = null;
       continue;
     }
 
-    // INPUT / OUTPUT / FORGET
-    const ioMatch = trimmed.match(/^(INPUT|OUTPUT|FORGET|FROM|TO)\b/i);
-    if(ioMatch){
-      const kw = ioMatch[1].toUpperCase();
-      if(kw === "FORGET"){
-        const f = createBlock("forget");
-        f.labels = trimmed.slice(6).trim();
-        splitLoose(f.labels).forEach(t => tags.add(t));
-        current().blocks.push(f);
-      } else {
-        const type = (kw === "INPUT" || trimmed.toUpperCase().includes(" FROM ")) ? "input" : "output";
-        const b = createBlock(type);
-        if(trimmed.toUpperCase().includes("EACH")) b.eachLabels = true;
-        const slotsMatch = trimmed.match(/SLOTS\s+([0-9,-]+)/i);
-        if(slotsMatch) b.slots = slotsMatch[1];
-        const cleanLine = trimmed.replace(/SLOTS\s+[0-9,-]+/i, "");
-        const labelsMatch = cleanLine.match(/(?:FROM|TO)\s+(?:EACH\s+)?([^ ]+)/i);
-        if(labelsMatch) {
-          b.labels = labelsMatch[1];
-          splitLoose(b.labels).forEach(t => tags.add(t));
-        }
-        current().blocks.push(b);
+    if(upper.startsWith("FORGET")){
+      const f = createBlock("forget");
+      f.labels = trimmed.slice(6).trim();
+      splitLoose(f.labels).forEach(t => tags.add(t));
+      current().blocks.push(f);
+      activeIO = null;
+      continue;
+    }
+
+    if(upper.startsWith("INPUT") || upper.startsWith("OUTPUT")){
+      const type = upper.startsWith("INPUT") ? "input" : "output";
+      activeIO = createBlock(type);
+      activeIO.limits = [];
+      current().blocks.push(activeIO);
+      trimmed = trimmed.slice(6).trim();
+      if(!trimmed) continue;
+    }
+
+    if(activeIO){
+      const locMatch = trimmed.match(/^(?:FROM|TO)\b\s*(?:EMPTY\s+SLOTS\s+IN\s+)?(?:EACH\s+)?(.*)$/i);
+      if(locMatch){
+         if(upper.includes("EMPTY SLOTS IN")) activeIO.emptySlots = true;
+         if(upper.includes("EACH")) activeIO.eachLabels = true;
+         let rest = locMatch[1] || "";
+         const slotsMatch = rest.match(/SLOTS\s+([0-9,-]+)/i);
+         if(slotsMatch) { activeIO.slots = slotsMatch[1]; rest = rest.replace(/SLOTS\s+[0-9,-]+/i, "").trim(); }
+         const rrMatch = rest.match(/ROUND\s+ROBIN\s+BY\s+(LABEL|BLOCK)/i);
+         if(rrMatch){ activeIO.roundRobin = rrMatch[1].toLowerCase(); rest = rest.replace(/ROUND\s+ROBIN\s+BY\s+(LABEL|BLOCK)/i, "").trim(); }
+         const sideMatch = rest.match(/(?:(.*)\s+SIDE|EACH\s+SIDE)/i);
+         if(sideMatch){
+            if(upper.includes("EACH SIDE")) activeIO.sideMode = "each";
+            else { activeIO.sideMode = "listed"; activeIO.sides = sideMatch[1].trim(); rest = rest.replace(/(.*)\s+SIDE/i, "").trim(); }
+         }
+         activeIO.labels = (activeIO.labels ? activeIO.labels + ", " : "") + rest.replace(/,$/,"").trim();
+         activeIO.labels = splitLoose(activeIO.labels).join(", ");
+         splitLoose(activeIO.labels).forEach(t => tags.add(t));
+         continue;
       }
-      continue;
+      if(upper.startsWith("EXCEPT")){
+        let rest = trimmed.slice(6).trim();
+        activeIO.exclusions = (activeIO.exclusions ? activeIO.exclusions + ", " : "") + rest.replace(/,$/,"");
+        continue;
+      }
+      if(/^(?:RETAIN|\d)/i.test(trimmed)){
+        const lim = makeLimit();
+        let rest = trimmed.replace(/,$/,"");
+        const eachQ = /\bEACH\b/i.test(rest.split(/RETAIN/i)[0]);
+        if(eachQ) lim.quantityEach = true;
+        const qMatch = rest.match(/^(\d+)/);
+        if(qMatch) { lim.quantity = qMatch[1]; rest = rest.replace(/^\d+\s*(?:EACH)?\s*/i, ""); }
+        if(/\bRETAIN\b/i.test(rest)){
+          const parts = rest.split(/\bRETAIN\b/i);
+          if(!lim.quantity) lim.resources = parts[0].trim();
+          let rPart = parts[1].trim();
+          const eachR = /\bEACH\b/i.test(rPart);
+          if(eachR) lim.retainEach = true;
+          const rMatch = rPart.match(/^(\d+)/);
+          if(rMatch){ lim.retain = rMatch[1]; rPart = rPart.replace(/^\d+\s*(?:EACH)?\s*/i, ""); }
+          lim.resources = (lim.resources ? lim.resources + " " : "") + rPart;
+        } else { lim.resources = rest.trim(); }
+        if(/\b(WITH|WITHOUT)\b/i.test(lim.resources)){
+          const wMatch = lim.resources.match(/\b(WITH|WITHOUT)\b\s+(.*)$/i);
+          if(wMatch){ lim.withMode = wMatch[1].toLowerCase(); lim.withClause = wMatch[2]; lim.resources = lim.resources.split(/\b(WITH|WITHOUT)\b/i)[0].trim(); }
+        }
+        activeIO.limits.push(lim);
+        continue;
+      }
     }
 
-    if(trimmed === "}" || trimmed === "{") continue;
-
-    // Fallback: unrecognized line as comment
     const fallback = createBlock("comment");
     fallback.value = trimmed;
     current().blocks.push(fallback);
+    activeIO = null;
   }
 
+  walk(blocks, b => {
+    if((b.type === "input" || b.type === "output") && b.limits.length === 0){
+      b.limits.push(makeLimit());
+    }
+  });
+
+  if(!name) name = "Imported Script";
   const s = createScript(name, blocks);
   s.tags = Array.from(tags);
   return s;
