@@ -25,12 +25,12 @@
   .side-btn{width:32px;height:32px;border:1px solid var(--bd);background:var(--bg3);color:var(--tx3);font-size:10px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;text-transform:uppercase}
   .side-btn:hover{background:var(--bg4);color:var(--tx2)}
   .side-btn.active{background:var(--ac);border-color:var(--ac);color:#fff}
-  .pb-name{background:var(--nm);border-color:var(--nmb);color:var(--nma)}.pb-name .dot{background:var(--nma)}.pb-trigger{background:var(--tr);border-color:var(--trb);color:var(--tra)}.pb-trigger .dot{background:var(--tra)}.pb-input{background:var(--in);border-color:var(--inb);color:var(--ina)}.pb-input .dot{background:var(--ina)}.pb-output{background:var(--out);border-color:var(--outb);color:var(--outa)}.pb-output .dot{background:var(--outa)}.pb-if{background:var(--if);border-color:var(--ifb);color:var(--ifa)}.pb-if .dot{background:var(--ifa)}.pb-forget{background:var(--fg);border-color:var(--fgb);color:var(--fga)}.pb-forget .dot{background:var(--fga)}
+  .pb-name{background:var(--nm);border-color:var(--nmb);color:var(--nma)}.pb-name .dot{background:var(--nma)}.pb-trigger{background:var(--tr);border-color:var(--trb);color:var(--tra)}.pb-trigger .dot{background:var(--tra)}.pb-input{background:var(--in);border-color:var(--inb);color:var(--ina)}.pb-input .dot{background:var(--ina)}.pb-output{background:var(--out);border-color:var(--outb);color:var(--outa)}.pb-output .dot{background:var(--outa)}.pb-if{background:var(--if);border-color:var(--ifb);color:var(--ifa)}.pb-if .dot{background:var(--ifa)}.pb-forget{background:var(--fg);border-color:var(--fgb);color:var(--fga)}.pb-forget .dot{background:var(--fga)}.pb-comment{background:var(--bg3);border-color:var(--bd);color:var(--tx3)}.pb-comment .dot{background:var(--tx3)}
   #empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 20px;min-height:320px;color:var(--tx3);text-align:center}#empty h3{font-size:16px;color:var(--tx2)}#empty p{font-size:13px;line-height:1.7;max-width:320px}#canvas.drag{background:var(--bg3)}
   .zone.drag-over{border-color:var(--ac);background:var(--bg4)}
-  .block{border-radius:8px;border:1.5px solid var(--bd);background:var(--bg2)}.tr{border-color:var(--trb)}.in{border-color:var(--inb)}.outb{border-color:var(--outb)}.iff{border-color:var(--ifb)}.fgb{border-color:var(--fgb)}.nmb{border-color:var(--nmb)}
-  .head{display:flex;align-items:center;gap:8px;padding:9px 10px;position:relative}.tr>.head{background:var(--tr)}.in>.head{background:var(--in)}.outb>.head{background:var(--out)}.iff>.head{background:var(--if)}.fgb>.head{background:var(--fg)}.nmb>.head{background:var(--nm)}
-  .accent{width:3px;height:calc(100% - 12px);position:absolute;left:0;top:6px;border-radius:2px}.tr .accent{background:var(--tra)}.in .accent{background:var(--ina)}.outb .accent{background:var(--outa)}.iff .accent{background:var(--ifa)}.fgb .accent{background:var(--fga)}.nmb .accent{background:var(--nma)}
+  .block{border-radius:8px;border:1.5px solid var(--bd);background:var(--bg2)}.tr{border-color:var(--trb)}.in{border-color:var(--inb)}.outb{border-color:var(--outb)}.iff{border-color:var(--ifb)}.fgb{border-color:var(--fgb)}.nmb{border-color:var(--nmb)}.cmtblk{border-color:var(--bd)}
+  .head{display:flex;align-items:center;gap:8px;padding:9px 10px;position:relative}.tr>.head{background:var(--tr)}.in>.head{background:var(--in)}.outb>.head{background:var(--out)}.iff>.head{background:var(--if)}.fgb>.head{background:var(--fg)}.nmb>.head{background:var(--nm)}.cmtblk>.head{background:var(--bg3)}
+  .accent{width:3px;height:calc(100% - 12px);position:absolute;left:0;top:6px;border-radius:2px}.tr .accent{background:var(--tra)}.in .accent{background:var(--ina)}.outb .accent{background:var(--outa)}.iff .accent{background:var(--ifa)}.fgb .accent{background:var(--fga)}.nmb .accent{background:var(--nma)}.cmtblk .accent{background:var(--tx3)}
   .toggle,.mini{width:22px;height:22px;background:transparent;border:1px solid transparent;color:var(--tx3);cursor:pointer;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}.mini.danger:hover{background:var(--fg);border-color:var(--fgb);color:var(--red)}
   .label{flex:1;padding-left:6px;font-size:12px;font-weight:800;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tr .label{color:var(--tra)}.in .label{color:var(--ina)}.outb .label{color:var(--outa)}.iff .label{color:var(--ifa)}.fgb .label{color:var(--fga)}.nmb .label{color:var(--nma)}.actions{display:flex;gap:4px}.body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}.collapsed .body{display:none}.collapsed .toggle{transform:rotate(-90deg)}
   .card,.zone{border:1px solid var(--bd);border-left:4px solid var(--bd2);border-radius:7px;background:var(--bg3);padding:9px;padding-left:14px;display:flex;flex-direction:column;gap:8px}.cardhead,.zonehead{display:flex;align-items:center;justify-content:space-between;gap:8px}.tag{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}.zoneitems{display:flex;flex-direction:column;gap:8px}.zoneempty{padding:10px;border:1px dashed var(--bd);border-radius:6px;text-align:center;color:var(--tx3);font-size:11px}.add{display:flex;flex-wrap:wrap;gap:6px}
@@ -86,6 +86,7 @@
       <div class="pblock pb-output" draggable="true" onclick="onPaletteClick('output')" ondragstart="onPaletteDragStart(event,'output')"><div class="dot"></div>Output</div>
       <div class="pblock pb-if" draggable="true" onclick="onPaletteClick('if')" ondragstart="onPaletteDragStart(event,'if')"><div class="dot"></div>If / Else If / Else</div>
       <div class="pblock pb-forget" draggable="true" onclick="onPaletteClick('forget')" ondragstart="onPaletteDragStart(event,'forget')"><div class="dot"></div>Forget</div>
+      <div class="pblock pb-comment" draggable="true" onclick="onPaletteClick('comment')" ondragstart="onPaletteDragStart(event,'comment')"><div class="dot"></div>Comment</div>
     </div>
     <div class="sec">
       <div class="title">Notes</div>
@@ -105,7 +106,7 @@
   </div>
 </div>
 <script>
-const STORAGE_KEY="sfm-blockly-editor-v3",ROOT_TYPES=new Set(["name","trigger"]),STATEMENTS=["input","output","if","forget"];
+const STORAGE_KEY="sfm-blockly-editor-v3",ROOT_TYPES=new Set(["name","trigger","comment"]),STATEMENTS=["input","output","if","forget","comment"];
 let dragType=null,idCounter=0,blocks=[],saveTimer=null,lastCode="";
 const app=loadState();init();
 
@@ -157,7 +158,7 @@ function normBlock(b){
   if(!b||typeof b!=="object"||!b.type) return null;
   b.id=typeof b.id==="string"?b.id:uid();
   b.collapsed=!!b.collapsed;
-  if(b.type==="name"){b.value=txt(b.value,"My Program");return b;}
+  if(b.type==="name"||b.type==="comment"){b.value=txt(b.value,b.type==="name"?"My Program":"...");return b;}
   if(b.type==="trigger"){
     b.scheduleMode=b.scheduleMode==="redstone"?"redstone":"interval";
     b.intervalValue=txt(b.intervalValue,"20");
@@ -216,6 +217,7 @@ function makeBranch(condition){return{condition:condition||"TRUE",blocks:[]};}
 function createBlock(type){
   const b={id:uid(),type,collapsed:false};
   if(type==="name"){b.value="My Program";return b;}
+  if(type==="comment"){b.value="";return b;}
   if(type==="trigger"){Object.assign(b,{scheduleMode:"interval",intervalValue:"20",intervalUnit:"ticks",intervalGlobal:false,intervalOffset:"",children:[]});return b;}
   if(type==="input"||type==="output"){Object.assign(b,{order:"action-first",eachLabels:false,labels:"",roundRobin:"",sideMode:"",sides:"",slots:"",exclusions:"",limits:[makeLimit()]});if(type==="output") b.emptySlots=false;return b;}
   if(type==="if"){Object.assign(b,{branches:[makeBranch("TRUE")],elseBlocks:[],hasElse:false});return b;}
@@ -496,7 +498,7 @@ function renderBlock(b,arr,i){
   return root;
 }
 
-function cls(type){return({name:"nmb",trigger:"tr",input:"in",output:"outb",if:"iff",forget:"fgb"})[type]||"";}
+function cls(type){return({name:"nmb",trigger:"tr",input:"in",output:"outb",if:"iff",forget:"fgb",comment:"cmtblk"})[type]||"";}
 function mini(t,title,fn,disabled,danger){const b=document.createElement("button");b.className="mini"+(danger?" danger":"");b.type="button";b.textContent=t;b.title=title;b.disabled=!!disabled;b.onclick=fn;return b;}
 
 function sidePicker(current,on){
@@ -617,6 +619,9 @@ function buildBody(b,body){
     body.appendChild(field("Labels",tagPicker(b.labels,v=>{b.labels=v;renderAll();scheduleSave("Labels updated");})));
     body.appendChild(noteEl("FORGET alone clears current inputs. FORGET label1, label2 also clears named labels."));
   }
+  if(b.type==="comment"){
+    body.appendChild(field("Comment",ta(b.value,"Type comment here...",v=>{b.value=v;soft(b);})));
+  }
 }
 
 function limitCard(block,lim,idx){
@@ -701,7 +706,7 @@ function noteEl(text){const d=document.createElement("div");d.className="note";d
 function normWs(s){return(s||"").replace(/\s+/g," ").trim();}
 function short(s,n){s=normWs(s);return s.length<=n?s:s.slice(0,n-3)+"...";}
 function soft(b){const el=document.querySelector('.block[data-id="'+b.id+'"] .label');if(el) el.textContent=blockLabel(b);generateCode();scheduleSave("Autosaving...");}
-function blockLabel(b){if(b.type==="name")return'NAME "'+short(b.value||"",28)+'"';if(b.type==="trigger")return triggerHead(b).replace(/\s+DO$/,"");if(b.type==="input")return"INPUT "+short(firstLimit(b)||labelAccess(b)||"...",38);if(b.type==="output")return"OUTPUT "+short(firstLimit(b)||labelAccess(b)||"...",38);if(b.type==="if")return"IF "+short(b.branches[0]?.condition||"TRUE",40);if(b.type==="forget")return b.labels?"FORGET "+short(b.labels,34):"FORGET";return b.type.toUpperCase();}
+function blockLabel(b){if(b.type==="name")return'NAME "'+short(b.value||"",28)+'"';if(b.type==="comment")return"-- "+short(b.value||"...",34);if(b.type==="trigger")return triggerHead(b).replace(/\s+DO$/,"");if(b.type==="input")return"INPUT "+short(firstLimit(b)||labelAccess(b)||"...",38);if(b.type==="output")return"OUTPUT "+short(firstLimit(b)||labelAccess(b)||"...",38);if(b.type==="if")return"IF "+short(b.branches[0]?.condition||"TRUE",40);if(b.type==="forget")return b.labels?"FORGET "+short(b.labels,34):"FORGET";return b.type.toUpperCase();}
 function firstLimit(b){const x=b.limits.map(formatLimit).filter(Boolean);return x[0]||"";}
 
 function generateCode(){
@@ -716,6 +721,7 @@ function generateCode(){
 function toLines(b,depth){
   const I="    ".repeat(depth);
   if(b.type==="name") return [];
+  if(b.type==="comment") return (b.value||"").split("\n").map(line => I + "-- " + line);
   if(b.type==="trigger"){
     const lines=[I+triggerHead(b)];
     b.children.forEach(x=>lines.push(...toLines(x,depth+1)));
@@ -849,6 +855,129 @@ function copyCode(){
   });
 }
 
+function heuristicParseSFM(text){
+  const lines = text.split(/\r?\n/);
+  let name = "Imported Script";
+  const tags = new Set();
+  const blocks = [];
+  const stack = [{blocks: blocks}]; // Stack of containers
+
+  function current() { return stack[stack.length - 1]; }
+
+  for(let line of lines){
+    const trimmed = line.trim();
+    if(!trimmed) continue;
+
+    // Name
+    const nameMatch = trimmed.match(/^(?:NAME|\{name)\s+"?([^"}]+)"?/i);
+    if(nameMatch && stack.length === 1){
+      name = nameMatch[1];
+      continue;
+    }
+
+    // Comment
+    if(trimmed.startsWith("--")){
+      const c = createBlock("comment");
+      c.value = trimmed.slice(2).trim();
+      current().blocks.push(c);
+      continue;
+    }
+
+    // Trigger
+    const everyMatch = trimmed.match(/^EVERY\s+(.+)\s+DO/i);
+    if(everyMatch){
+      const t = createBlock("trigger");
+      const val = everyMatch[1].toUpperCase();
+      if(val === "REDSTONE PULSE"){
+        t.scheduleMode = "redstone";
+      } else {
+        t.scheduleMode = "interval";
+        const parts = everyMatch[1].split(/\s+/);
+        // simplistic extraction: find a number, find GLOBAL, find unit
+        t.intervalValue = parts.find(p => /^\d+$/.test(p)) || "20";
+        t.intervalUnit = parts.find(p => ["TICKS","TICK","SECONDS","SECOND"].includes(p.toUpperCase()))?.toLowerCase() || "ticks";
+        t.intervalGlobal = parts.some(p => p.toUpperCase() === "GLOBAL");
+      }
+      current().blocks.push(t);
+      stack.push({type: "trigger", block: t, blocks: t.children});
+      continue;
+    }
+
+    // IF
+    const ifMatch = trimmed.match(/^(?:ELSE IF|IF)\s+(.+)\s+THEN/i);
+    if(ifMatch){
+      const isElseIf = trimmed.toUpperCase().startsWith("ELSE IF");
+      if(isElseIf && current().type === "if"){
+        const br = makeBranch(ifMatch[1]);
+        current().block.branches.push(br);
+        stack.push({type: "branch", blocks: br.blocks});
+      } else {
+        const i = createBlock("if");
+        i.branches[0].condition = ifMatch[1];
+        current().blocks.push(i);
+        stack.push({type: "if", block: i});
+        stack.push({type: "branch", blocks: i.branches[0].blocks});
+      }
+      continue;
+    }
+
+    // ELSE
+    if(trimmed.toUpperCase() === "ELSE" && (current().type === "if" || (stack[stack.length-2]?.type === "if"))){
+      if(current().type === "branch") stack.pop();
+      const i = current().block;
+      i.hasElse = true;
+      stack.push({type: "else", blocks: i.elseBlocks});
+      continue;
+    }
+
+    // END
+    if(trimmed.toUpperCase() === "END"){
+      if(stack.length > 1){
+        if(["branch","else"].includes(current().type)) stack.pop();
+        stack.pop();
+      }
+      continue;
+    }
+
+    // INPUT / OUTPUT / FORGET
+    const ioMatch = trimmed.match(/^(INPUT|OUTPUT|FORGET|FROM|TO)\b/i);
+    if(ioMatch){
+      const kw = ioMatch[1].toUpperCase();
+      if(kw === "FORGET"){
+        const f = createBlock("forget");
+        f.labels = trimmed.slice(6).trim();
+        splitLoose(f.labels).forEach(t => tags.add(t));
+        current().blocks.push(f);
+      } else {
+        const type = (kw === "INPUT" || trimmed.toUpperCase().includes(" FROM ")) ? "input" : "output";
+        const b = createBlock(type);
+        if(trimmed.toUpperCase().includes("EACH")) b.eachLabels = true;
+        const slotsMatch = trimmed.match(/SLOTS\s+([0-9,-]+)/i);
+        if(slotsMatch) b.slots = slotsMatch[1];
+        const cleanLine = trimmed.replace(/SLOTS\s+[0-9,-]+/i, "");
+        const labelsMatch = cleanLine.match(/(?:FROM|TO)\s+(?:EACH\s+)?([^ ]+)/i);
+        if(labelsMatch) {
+          b.labels = labelsMatch[1];
+          splitLoose(b.labels).forEach(t => tags.add(t));
+        }
+        current().blocks.push(b);
+      }
+      continue;
+    }
+
+    if(trimmed === "}" || trimmed === "{") continue;
+
+    // Fallback: unrecognized line as comment
+    const fallback = createBlock("comment");
+    fallback.value = trimmed;
+    current().blocks.push(fallback);
+  }
+
+  const s = createScript(name, blocks);
+  s.tags = Array.from(tags);
+  return s;
+}
+
 function importSFM(){
   const inp=document.createElement("input");
   inp.type="file";
@@ -860,7 +989,13 @@ function importSFM(){
     reader.onload=re=>{
       const content=re.target.result;
       const m=content.match(/-- METADATA: (.*)$/);
-      if(!m){alert("Could not find block metadata in this .sfm file.");return;}
+      if(!m){
+        const s = heuristicParseSFM(content);
+        app.scripts.unshift(s);
+        openScript(s.id);
+        saveStatus("Imported (Best effort) "+file.name);
+        return;
+      }
       try{
         const meta=JSON.parse(m[1]);
         const s=createScript(meta.name||"Imported Script",meta.blocks||[]);
