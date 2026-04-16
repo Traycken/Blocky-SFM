@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SFM Blockly Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--bg4:#252d40;--bd:#2a3350;--bd2:#3a4870;--tx:#e8eaf6;--tx2:#9ea7c6;--tx3:#5a678e;--ac:#7c6af7;--amber:#f0922b;--red:#e55353;--green:#4ecb71;--teal:#3ecfb8;--pink:#e05eb5;--code:#0a0e18;--tr:#1a2545;--trb:#3b5398;--tra:#5572cc;--in:#1a2f20;--inb:#2d6640;--ina:#3d9956;--out:#2a1f35;--outb:#6a3d8a;--outa:#9b5cc4;--if:#2a2015;--ifb:#7a5510;--ifa:#c48a20;--fg:#2a1a1a;--fgb:#6a2222;--fga:#cc3333;--nm:#10201f;--nmb:#1e5a55;--nma:#2e8c84}
+  [data-theme=day]{--bg:#f0f2f8;--bg2:#fff;--bg3:#eaecf5;--bg4:#dde0ef;--bd:#c8cde6;--bd2:#a0a8d0;--tx:#1a1f3a;--tx2:#4a5280;--tx3:#8890b8;--ac:#5b4ecc;--amber:#c4720d;--red:#cc2222;--green:#1a8c3a;--teal:#1a9e8a;--pink:#b02090;--code:#f8f9fe;--tr:#e8ecf9;--trb:#9aaae8;--tra:#5572cc;--in:#e8f5ec;--inb:#7ac898;--ina:#2a7a48;--out:#f0e8f8;--outb:#c090e0;--outa:#7030a8;--if:#fdf5e0;--ifb:#e0b840;--ifa:#9a6808;--fg:#fde8e8;--fgb:#e08080;--fga:#aa1818;--nm:#e0f5f3;--nmb:#60c8be;--nma:#1a8078}
+  [data-theme=twilight]{--bg:#0a0500;--bg2:#100800;--bg3:#180c00;--bg4:#201000;--bd:#3a1800;--bd2:#5a2800;--tx:#e8c080;--tx2:#b27b36;--tx3:#704010;--ac:#c07820;--amber:#e08010;--red:#c04020;--green:#805000;--teal:#906030;--pink:#a04020;--code:#060300;--tr:#150a00;--trb:#502000;--tra:#904010;--in:#0e0a00;--inb:#403000;--ina:#706000;--out:#120800;--outb:#602000;--outa:#a04010;--if:#150c00;--ifb:#604010;--ifa:#a07020;--fg:#120600;--fgb:#501000;--fga:#902010;--nm:#0e0800;--nmb:#403000;--nma:#705020}
+  *{box-sizing:border-box;margin:0;padding:0}body{font:14px Syne,sans-serif;background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden}button,input,select,textarea{font:inherit}
+  #topbar{display:flex;align-items:center;gap:10px;padding:0 16px;height:56px;background:var(--bg2);border-bottom:1px solid var(--bd)}#logo{font-size:18px;font-weight:800;color:var(--ac);margin-right:8px}#logo span{color:var(--amber)}
+  .btn,.mini,.theme,.script,.pblock{transition:.15s background,.15s border-color,.15s color,.15s transform}.btn,.copy,.mini,.theme,.fieldbtn,.script{border:1px solid var(--bd);background:var(--bg3);color:var(--tx2);border-radius:6px}.btn,.copy,.fieldbtn{padding:6px 10px;cursor:pointer;font-size:12px;font-weight:700}.btn:hover,.copy:hover,.fieldbtn:hover,.script:hover,.mini:hover,.theme:hover{background:var(--bg4);border-color:var(--bd2);color:var(--tx)}.btn.primary{background:var(--ac);border-color:var(--ac);color:#fff}
+  #status{margin-left:auto;padding:4px 10px;border:1px solid var(--bd);border-radius:999px;background:var(--bg3);font-size:11px;font-weight:700;color:var(--tx2)}#themes{display:flex;gap:4px}.theme{width:30px;height:30px;cursor:pointer;font-size:12px;font-weight:800}.theme.active{border-color:var(--ac);color:var(--ac)}
+  #main{display:flex;flex:1;min-height:0}#side{width:300px;background:var(--bg2);border-right:1px solid var(--bd);overflow:auto;flex-shrink:0}#canvas{flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:12px;background:var(--bg)}#code{width:360px;background:var(--bg2);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
+  .sec{padding:12px 14px 8px}.title{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--bd)}.row{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}.lab{font-size:11px;font-weight:700;color:var(--tx2);min-width:82px;padding-top:6px}.grow{flex:1}
+  .inp,.sel,.ta{background:var(--bg3);border:1px solid var(--bd);border-radius:6px;color:var(--tx);padding:6px 8px;font:12px JetBrains Mono,monospace;outline:none}.inp,.ta{flex:1;min-width:110px}.inp:focus,.sel:focus,.ta:focus{border-color:var(--ac)}.ta{min-height:56px;resize:vertical;width:100%}.inp:disabled,.sel:disabled,.ta:disabled{opacity:.55;cursor:not-allowed}
+  .check{display:inline-flex;align-items:center;gap:6px;min-height:32px;font-size:12px;color:var(--tx2)}.check input{accent-color:var(--ac)}.inline{display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex:1}.note{font-size:11px;line-height:1.5;color:var(--tx3)}
+  .scripts{display:flex;flex-direction:column;gap:6px;margin-top:10px}.script{width:100%;text-align:left;padding:10px;cursor:pointer}.script.active{border-color:var(--ac)}.sname{font-size:12px;font-weight:700;margin-bottom:4px}.smeta{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--tx3)}
+  .pblock{padding:9px 10px;border-radius:6px;margin-bottom:6px;cursor:grab;border:1px solid transparent;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;user-select:none}.pblock:hover{transform:translateX(2px)}.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .pb-name{background:var(--nm);border-color:var(--nmb);color:var(--nma)}.pb-name .dot{background:var(--nma)}.pb-trigger{background:var(--tr);border-color:var(--trb);color:var(--tra)}.pb-trigger .dot{background:var(--tra)}.pb-input{background:var(--in);border-color:var(--inb);color:var(--ina)}.pb-input .dot{background:var(--ina)}.pb-output{background:var(--out);border-color:var(--outb);color:var(--outa)}.pb-output .dot{background:var(--outa)}.pb-if{background:var(--if);border-color:var(--ifb);color:var(--ifa)}.pb-if .dot{background:var(--ifa)}.pb-forget{background:var(--fg);border-color:var(--fgb);color:var(--fga)}.pb-forget .dot{background:var(--fga)}
+  #empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 20px;min-height:320px;color:var(--tx3);text-align:center}#empty h3{font-size:16px;color:var(--tx2)}#empty p{font-size:13px;line-height:1.7;max-width:320px}#canvas.drag{background:var(--bg3)}
+  .block{border-radius:8px;border:1.5px solid var(--bd);background:var(--bg2)}.tr{border-color:var(--trb)}.in{border-color:var(--inb)}.outb{border-color:var(--outb)}.iff{border-color:var(--ifb)}.fgb{border-color:var(--fgb)}.nmb{border-color:var(--nmb)}
+  .head{display:flex;align-items:center;gap:8px;padding:9px 10px;position:relative}.tr>.head{background:var(--tr)}.in>.head{background:var(--in)}.outb>.head{background:var(--out)}.iff>.head{background:var(--if)}.fgb>.head{background:var(--fg)}.nmb>.head{background:var(--nm)}
+  .accent{width:3px;height:calc(100% - 12px);position:absolute;left:0;top:6px;border-radius:2px}.tr .accent{background:var(--tra)}.in .accent{background:var(--ina)}.outb .accent{background:var(--outa)}.iff .accent{background:var(--ifa)}.fgb .accent{background:var(--fga)}.nmb .accent{background:var(--nma)}
+  .toggle,.mini{width:22px;height:22px;background:transparent;border:1px solid transparent;color:var(--tx3);cursor:pointer;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}.mini.danger:hover{background:var(--fg);border-color:var(--fgb);color:var(--red)}
+  .label{flex:1;padding-left:6px;font-size:12px;font-weight:800;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tr .label{color:var(--tra)}.in .label{color:var(--ina)}.outb .label{color:var(--outa)}.iff .label{color:var(--ifa)}.fgb .label{color:var(--fga)}.nmb .label{color:var(--nma)}.actions{display:flex;gap:4px}.body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}.collapsed .body{display:none}.collapsed .toggle{transform:rotate(-90deg)}
+  .card,.zone{border:1px solid var(--bd);border-radius:7px;background:var(--bg3);padding:9px;display:flex;flex-direction:column;gap:8px}.cardhead,.zonehead{display:flex;align-items:center;justify-content:space-between;gap:8px}.tag{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}.zoneitems{display:flex;flex-direction:column;gap:8px}.zoneempty{padding:10px;border:1px dashed var(--bd);border-radius:6px;text-align:center;color:var(--tx3);font-size:11px}.add{display:flex;flex-wrap:wrap;gap:6px}
+  #codehead{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}#codetitle{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#out{flex:1;overflow:auto;padding:14px;background:var(--code);font:12px/1.7 JetBrains Mono,monospace;white-space:pre;tab-size:4}
+  .tk{color:var(--tra);font-weight:700}.kw{color:var(--outa)}.kw2{color:var(--ina)}.kw3{color:var(--ifa)}.str{color:var(--teal)}.num{color:var(--amber)}.cmt{color:var(--tx3);font-style:italic}.item{color:var(--pink)}
+  @media (max-width:980px){#main{flex-direction:column}#side,#code{width:100%;border:0;border-bottom:1px solid var(--bd)}#side{max-height:38vh}#code{max-height:32vh}#status{display:none}}
+</style>
+</head>
+<body data-theme="night">
+<div id="topbar">
+  <div id="logo">SFM<span>.</span>Blockly</div>
+  <button class="btn" onclick="createBlankScript()">New Script</button>
+  <button class="btn" onclick="loadExample()">Load Example</button>
+  <button class="btn" onclick="saveCopy()">Save Copy</button>
+  <button class="btn" onclick="clearAll()">Clear</button>
+  <button class="btn primary" onclick="exportSFM()">Export .sfm</button>
+  <div id="status">Local autosave active</div>
+  <div id="themes">
+    <button class="theme active" data-t="night" onclick="setTheme('night')">N</button>
+    <button class="theme" data-t="day" onclick="setTheme('day')">D</button>
+    <button class="theme" data-t="twilight" onclick="setTheme('twilight')">T</button>
+  </div>
+</div>
+<div id="main">
+  <div id="side">
+    <div class="sec">
+      <div class="title">Local Scripts</div>
+      <div class="row" style="margin-bottom:8px">
+        <button class="fieldbtn" onclick="createBlankScript()">+ New</button>
+        <button class="fieldbtn" onclick="saveCopy()">Duplicate</button>
+        <button class="fieldbtn" onclick="deleteCurrentScript()">Delete</button>
+      </div>
+      <input id="scriptName" class="inp" type="text" placeholder="Local script name" oninput="renameCurrentScript(this.value)" style="width:100%;margin-bottom:8px">
+      <div id="saveNote" class="note">Autosave writes to localStorage after each edit.</div>
+      <div id="scriptList" class="scripts"></div>
+    </div>
+    <div class="sec">
+      <div class="title">Structure</div>
+      <div class="pblock pb-name" draggable="true" onclick="onPaletteClick('name')" ondragstart="onPaletteDragStart(event,'name')"><div class="dot"></div>Program Name</div>
+      <div class="pblock pb-trigger" draggable="true" onclick="onPaletteClick('trigger')" ondragstart="onPaletteDragStart(event,'trigger')"><div class="dot"></div>Trigger</div>
+    </div>
+    <div class="sec">
+      <div class="title">Statements</div>
+      <div class="pblock pb-input" draggable="true" onclick="onPaletteClick('input')" ondragstart="onPaletteDragStart(event,'input')"><div class="dot"></div>Input</div>
+      <div class="pblock pb-output" draggable="true" onclick="onPaletteClick('output')" ondragstart="onPaletteDragStart(event,'output')"><div class="dot"></div>Output</div>
+      <div class="pblock pb-if" draggable="true" onclick="onPaletteClick('if')" ondragstart="onPaletteDragStart(event,'if')"><div class="dot"></div>If / Else If / Else</div>
+      <div class="pblock pb-forget" draggable="true" onclick="onPaletteClick('forget')" ondragstart="onPaletteDragStart(event,'forget')"><div class="dot"></div>Forget</div>
+    </div>
+    <div class="sec">
+      <div class="title">Notes</div>
+      <div class="note">Drag only <strong>Name</strong> and <strong>Trigger</strong> onto the main canvas. Add Input, Output, If, and Forget inside triggers or IF branches. The editor no longer rebuilds everything on every keystroke and autosaves locally.</div>
+    </div>
+  </div>
+  <div id="canvas" ondragover="onCanvasDragOver(event)" ondrop="onCanvasDrop(event)" ondragleave="onCanvasDragLeave(event)">
+    <div id="empty">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="12" width="56" height="40" rx="6" stroke="currentColor" stroke-width="2" stroke-dasharray="5 3"/><rect x="12" y="20" width="16" height="10" rx="3" fill="currentColor" opacity=".3"/><rect x="36" y="20" width="16" height="10" rx="3" fill="currentColor" opacity=".3"/><rect x="12" y="34" width="40" height="10" rx="3" fill="currentColor" opacity=".2"/></svg>
+      <h3>Drop top-level blocks here</h3>
+      <p>Start with <strong>Program Name</strong> or <strong>Trigger</strong>. Statements are added inside triggers and IF branches.</p>
+    </div>
+  </div>
+  <div id="code">
+    <div id="codehead"><span id="codetitle">Generated SFM</span><button class="copy" onclick="copyCode()">Copy</button></div>
+    <div id="out"><span class="cmt">-- Start building to see code</span></div>
+  </div>
+</div>
+<script>
+const STORAGE_KEY="sfm-blockly-editor-v3",ROOT_TYPES=new Set(["name","trigger"]),STATEMENTS=["input","output","if","forget"];
+let dragType=null,idCounter=0,blocks=[],saveTimer=null,lastCode="";
+const app=loadState();init();
+
+function init(){
+  normalizeState(app);
+  if(!app.scripts.length){
+    const s=createScript(nextUntitled(),[]);
+    app.scripts.push(s);
+    app.currentScriptId=s.id;
+  }
+  refreshIds();
+  openScript(app.currentScriptId,false);
+  setTheme(app.theme||"night",false);
+  renderScriptList();
+  renderAll();
+  window.addEventListener("beforeunload",persistNow);
+}
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    return raw?JSON.parse(raw):{version:3,theme:"night",currentScriptId:null,nextUntitled:1,scripts:[]};
+  }catch(e){
+    console.error(e);
+    return{version:3,theme:"night",currentScriptId:null,nextUntitled:1,scripts:[]};
+  }
+}
+
+function normalizeState(s){
+  s.version=3;
+  s.theme=["night","day","twilight"].includes(s.theme)?s.theme:"night";
+  s.nextUntitled=Number.isInteger(s.nextUntitled)&&s.nextUntitled>0?s.nextUntitled:1;
+  s.scripts=Array.isArray(s.scripts)?s.scripts.map(normScript).filter(Boolean):[];
+  if(!s.currentScriptId||!s.scripts.some(x=>x.id===s.currentScriptId)) s.currentScriptId=s.scripts[0]?.id||null;
+}
+
+function normScript(s){
+  if(!s||typeof s!=="object") return null;
+  return{
+    id:typeof s.id==="string"?s.id:scriptId(),
+    name:typeof s.name==="string"?s.name:"",
+    updatedAt:Number.isFinite(s.updatedAt)?s.updatedAt:Date.now(),
+    blocks:Array.isArray(s.blocks)?s.blocks.map(normBlock).filter(Boolean):[]
+  };
+}
+
+function normBlock(b){
+  if(!b||typeof b!=="object"||!b.type) return null;
+  b.id=typeof b.id==="string"?b.id:uid();
+  b.collapsed=!!b.collapsed;
+  if(b.type==="name"){b.value=txt(b.value,"My Program");return b;}
+  if(b.type==="trigger"){
+    b.scheduleMode=b.scheduleMode==="redstone"?"redstone":"interval";
+    b.intervalValue=txt(b.intervalValue,"20");
+    b.intervalUnit=["tick","ticks","second","seconds"].includes(b.intervalUnit)?b.intervalUnit:"ticks";
+    b.intervalGlobal=!!b.intervalGlobal;
+    b.intervalOffset=txt(b.intervalOffset,"");
+    b.children=Array.isArray(b.children)?b.children.map(normBlock).filter(Boolean):[];
+    return b;
+  }
+  if(b.type==="input"||b.type==="output"){
+    b.order=b.order==="location-first"?"location-first":"action-first";
+    b.eachLabels=!!b.eachLabels;
+    b.labels=txt(b.labels,"");
+    b.roundRobin=["label","block"].includes(b.roundRobin)?b.roundRobin:"";
+    b.sideMode=["listed","each"].includes(b.sideMode)?b.sideMode:"";
+    b.sides=txt(b.sides,"");
+    b.slots=txt(b.slots,"");
+    b.exclusions=txt(b.exclusions,"");
+    b.limits=Array.isArray(b.limits)&&b.limits.length?b.limits.map(normLimit):[makeLimit()];
+    if(b.type==="output") b.emptySlots=!!b.emptySlots;
+    return b;
+  }
+  if(b.type==="if"){
+    b.branches=Array.isArray(b.branches)&&b.branches.length?b.branches.map(normBranch).filter(Boolean):[makeBranch("TRUE")];
+    b.elseBlocks=Array.isArray(b.elseBlocks)?b.elseBlocks.map(normBlock).filter(Boolean):[];
+    b.hasElse=!!b.hasElse||b.elseBlocks.length>0;
+    return b;
+  }
+  if(b.type==="forget"){b.labels=txt(b.labels,"");return b;}
+  return null;
+}
+
+function normBranch(x){if(!x||typeof x!=="object") return null; return{condition:txt(x.condition,"TRUE"),blocks:Array.isArray(x.blocks)?x.blocks.map(normBlock).filter(Boolean):[]};}
+function normLimit(x){return{quantity:txt(x?.quantity,""),quantityEach:!!x?.quantityEach,retain:txt(x?.retain,""),retainEach:!!x?.retainEach,resources:txt(x?.resources,""),withMode:["with","without"].includes(x?.withMode)?x.withMode:"",withClause:txt(x?.withClause,"")};}
+function txt(v,f){return typeof v==="string"?v:f;}
+
+function kids(b){
+  const out=[];
+  if(b.type==="trigger") out.push(b.children||[]);
+  if(b.type==="if"){(b.branches||[]).forEach(br=>out.push(br.blocks||[]));out.push(b.elseBlocks||[]);}
+  return out;
+}
+
+function walk(arr,fn){(arr||[]).forEach(b=>{fn(b);kids(b).forEach(k=>walk(k,fn));});}
+function refreshIds(){let max=0;app.scripts.forEach(s=>walk(s.blocks,b=>{const m=/^b(\d+)$/.exec(b.id||"");if(m) max=Math.max(max,+m[1]);}));idCounter=max;}
+function uid(){idCounter+=1;return"b"+idCounter;}
+function scriptId(){return"script_"+Math.random().toString(36).slice(2,10);}
+function nextUntitled(){const n="Untitled "+app.nextUntitled;app.nextUntitled+=1;return n;}
+function createScript(name,init){return{id:scriptId(),name,updatedAt:Date.now(),blocks:init||[]};}
+function currentScript(){return app.scripts.find(s=>s.id===app.currentScriptId)||null;}
+function currentName(){const s=currentScript();return s?.name?.trim()?s.name.trim():"Untitled script";}
+
+function makeLimit(o){return Object.assign({quantity:"",quantityEach:false,retain:"",retainEach:false,resources:"",withMode:"",withClause:""},o||{});}
+function makeBranch(condition){return{condition:condition||"TRUE",blocks:[]};}
+
+function createBlock(type){
+  const b={id:uid(),type,collapsed:false};
+  if(type==="name"){b.value="My Program";return b;}
+  if(type==="trigger"){Object.assign(b,{scheduleMode:"interval",intervalValue:"20",intervalUnit:"ticks",intervalGlobal:false,intervalOffset:"",children:[]});return b;}
+  if(type==="input"||type==="output"){Object.assign(b,{order:"action-first",eachLabels:false,labels:"",roundRobin:"",sideMode:"",sides:"",slots:"",exclusions:"",limits:[makeLimit()]});if(type==="output") b.emptySlots=false;return b;}
+  if(type==="if"){Object.assign(b,{branches:[makeBranch("TRUE")],elseBlocks:[],hasElse:false});return b;}
+  if(type==="forget"){b.labels="";return b;}
+  return b;
+}
+
+function cloneBlock(b){const c=JSON.parse(JSON.stringify(b));assignIds(c);return normBlock(c);}
+function assignIds(b){b.id=uid();kids(b).forEach(arr=>arr.forEach(assignIds));}
+
+function openScript(id,persist){
+  const s=app.scripts.find(x=>x.id===id);
+  if(!s) return;
+  app.currentScriptId=s.id;
+  blocks=s.blocks;
+  document.getElementById("scriptName").value=s.name||"";
+  document.getElementById("codetitle").textContent="Generated SFM - "+currentName();
+  renderScriptList();
+  renderAll();
+  if(persist!==false) scheduleSave("Script switched");
+}
+
+function setTheme(t,persist){
+  app.theme=t;
+  document.body.dataset.theme=t;
+  document.querySelectorAll(".theme").forEach(b=>b.classList.toggle("active",b.dataset.t===t));
+  if(persist!==false) scheduleSave("Theme updated");
+}
+
+function saveStatus(msg){document.getElementById("status").textContent=msg;document.getElementById("saveNote").textContent=msg;}
+function fmtTime(ts){return new Date(ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit",second:"2-digit"});}
+
+function persistNow(){
+  clearTimeout(saveTimer);
+  saveTimer=null;
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({version:3,theme:app.theme,currentScriptId:app.currentScriptId,nextUntitled:app.nextUntitled,scripts:app.scripts}));
+    saveStatus("Autosaved at "+fmtTime(Date.now()));
+  }catch(e){
+    console.error(e);
+    saveStatus("Autosave failed");
+  }
+}
+
+function scheduleSave(msg){
+  const s=currentScript();
+  if(s) s.updatedAt=Date.now();
+  if(msg) saveStatus(msg);
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(persistNow,300);
+}
+
+function renderScriptList(){
+  const box=document.getElementById("scriptList");
+  box.innerHTML="";
+  app.scripts.forEach(s=>{
+    const b=document.createElement("button");
+    b.className="script"+(s.id===app.currentScriptId?" active":"");
+    b.type="button";
+    b.onclick=()=>openScript(s.id,false);
+    b.innerHTML='<div class="sname">'+escText(s.name?.trim()||"Untitled script")+'</div><div class="smeta">'+countBlocks(s.blocks)+" block(s) - "+fmtTime(s.updatedAt)+"</div>";
+    box.appendChild(b);
+  });
+}
+
+function countBlocks(arr){let n=0;walk(arr,()=>n++);return n;}
+
+function createBlankScript(){
+  const s=createScript(nextUntitled(),[]);
+  app.scripts.unshift(s);
+  app.currentScriptId=s.id;
+  blocks=s.blocks;
+  renderScriptList();
+  renderAll();
+  document.getElementById("scriptName").value=s.name;
+  scheduleSave("New local script created");
+}
+
+function saveCopy(){
+  const s=createScript(currentName()+" copy",blocks.map(cloneBlock));
+  app.scripts.unshift(s);
+  app.currentScriptId=s.id;
+  blocks=s.blocks;
+  renderScriptList();
+  renderAll();
+  document.getElementById("scriptName").value=s.name;
+  scheduleSave("Local copy saved");
+}
+
+function deleteCurrentScript(){
+  if(!currentScript()) return;
+  if(!confirm("Delete the current local script from localStorage?")) return;
+  const i=app.scripts.findIndex(s=>s.id===app.currentScriptId);
+  if(i<0) return;
+  app.scripts.splice(i,1);
+  if(!app.scripts.length){
+    const s=createScript(nextUntitled(),[]);
+    app.scripts.push(s);
+  }
+  openScript(app.scripts[Math.max(0,i-1)].id,false);
+  scheduleSave("Local script deleted");
+}
+
+function renameCurrentScript(name){
+  const s=currentScript();
+  if(!s) return;
+  s.name=name;
+  document.getElementById("codetitle").textContent="Generated SFM - "+currentName();
+  renderScriptList();
+  scheduleSave("Script name updated");
+}
+
+function loadExample(){
+  const name=createBlock("name");name.value="Advanced Factory";
+  const t1=createBlock("trigger");
+  const i1=createBlock("input");i1.labels="fuel_chest";i1.limits=[makeLimit({retain:"8",resources:"coal OR charcoal"}),makeLimit({retain:"16",resources:"*_log OR *_planks",withMode:"with",withClause:"TAG minecraft:planks OR TAG minecraft:logs"})];t1.children.push(i1);
+  const o1=createBlock("output");o1.eachLabels=true;o1.labels="smoker, blast_furnace";o1.sideMode="listed";o1.sides="west";o1.roundRobin="block";o1.limits=[makeLimit({quantity:"1",resources:"coal OR charcoal"}),makeLimit({quantity:"1",resources:"*_log OR *_planks"})];t1.children.push(o1);
+  const i2=createBlock("input");i2.labels="input_chest";i2.limits=[makeLimit({resources:"raw_iron OR raw_gold OR raw_copper"})];t1.children.push(i2);
+  const o2=createBlock("output");o2.eachLabels=true;o2.labels="blast_furnace";o2.sideMode="listed";o2.sides="top";o2.limits=[makeLimit({quantity:"1",resources:"raw_iron OR raw_gold OR raw_copper"})];t1.children.push(o2);
+  t1.children.push(createBlock("forget"));
+  const i3=createBlock("input");i3.labels="smoker, blast_furnace";i3.sideMode="listed";i3.sides="bottom";t1.children.push(i3);
+  const o3=createBlock("output");o3.labels="result_buffer";t1.children.push(o3);
+  const t2=createBlock("trigger");t2.scheduleMode="redstone";
+  const cond=createBlock("if");cond.branches=[makeBranch("REDSTONE > 0 AND result_buffer HAS >= 64 iron_ingot"),makeBranch("SOME result_buffer HAS >= 32 gold_ingot")];
+  const ao=createBlock("output");ao.labels="alarm";ao.limits=[makeLimit({quantity:"1",resources:"redstone_block"})];cond.branches[0].blocks.push(ao);
+  const bo=createBlock("output");bo.labels="alarm";bo.limits=[makeLimit({quantity:"1",resources:"note_block"})];cond.branches[1].blocks.push(bo);
+  const fg=createBlock("forget");fg.labels="alarm";cond.hasElse=true;cond.elseBlocks.push(fg);t2.children.push(cond);
+  const s=createScript("Example - Advanced SFM",[name,t1,t2]);
+  app.scripts.unshift(s);app.currentScriptId=s.id;blocks=s.blocks;renderScriptList();renderAll();document.getElementById("scriptName").value=s.name;scheduleSave("Example loaded into local storage");
+}
+
+function onPaletteClick(type){addRoot(type);}
+function onPaletteDragStart(e,type){dragType=type;e.dataTransfer.effectAllowed="copy";}
+function onCanvasDragOver(e){e.preventDefault();document.getElementById("canvas").classList.add("drag");}
+function onCanvasDragLeave(){document.getElementById("canvas").classList.remove("drag");}
+function onCanvasDrop(e){e.preventDefault();document.getElementById("canvas").classList.remove("drag");if(!dragType) return;addRoot(dragType);dragType=null;}
+
+function addRoot(type){
+  if(!ROOT_TYPES.has(type)){saveStatus("Add Input / Output / If / Forget inside a trigger or an IF branch.");return;}
+  if(type==="name"&&blocks.some(b=>b.type==="name")){saveStatus("Only one top-level NAME block is allowed.");return;}
+  blocks.push(createBlock(type));
+  renderAll();
+  scheduleSave(type.toUpperCase()+" block added");
+}
+
+function addStatement(arr,type){arr.push(createBlock(type));renderAll();scheduleSave(type.toUpperCase()+" block added");}
+function move(arr,i,d){const j=i+d;if(j<0||j>=arr.length) return;[arr[i],arr[j]]=[arr[j],arr[i]];renderAll();scheduleSave("Block order updated");}
+function dup(arr,i){arr.splice(i+1,0,cloneBlock(arr[i]));renderAll();scheduleSave("Block duplicated");}
+function del(arr,i){arr.splice(i,1);renderAll();scheduleSave("Block removed");}
+
+function renderAll(){
+  const c=document.getElementById("canvas"),empty=document.getElementById("empty");
+  empty.style.display=blocks.length?"none":"flex";
+  [...c.children].forEach(x=>x.id!=="empty"&&x.remove());
+  blocks.forEach((b,i)=>c.appendChild(renderBlock(b,blocks,i)));
+  document.getElementById("codetitle").textContent="Generated SFM - "+currentName();
+  generateCode();
+}
+
+function renderBlock(b,arr,i){
+  const root=document.createElement("div");
+  root.className="block "+cls(b.type);
+  root.dataset.id=b.id;
+  if(b.collapsed) root.classList.add("collapsed");
+
+  const head=document.createElement("div");
+  head.className="head";
+  head.innerHTML='<div class="accent"></div>';
+
+  const tog=document.createElement("button");
+  tog.className="toggle";
+  tog.type="button";
+  tog.textContent="v";
+  tog.onclick=()=>{b.collapsed=!b.collapsed;root.classList.toggle("collapsed",b.collapsed);scheduleSave("Block layout updated");};
+  head.appendChild(tog);
+
+  const label=document.createElement("div");
+  label.className="label";
+  label.textContent=blockLabel(b);
+  head.appendChild(label);
+
+  const actions=document.createElement("div");
+  actions.className="actions";
+  actions.appendChild(mini("u","Move up",()=>move(arr,i,-1),i===0));
+  actions.appendChild(mini("d","Move down",()=>move(arr,i,1),i===arr.length-1));
+  actions.appendChild(mini("+","Duplicate",()=>dup(arr,i)));
+  actions.appendChild(mini("x","Delete",()=>del(arr,i),false,true));
+  head.appendChild(actions);
+
+  root.appendChild(head);
+  const body=document.createElement("div");
+  body.className="body";
+  buildBody(b,body);
+  root.appendChild(body);
+  return root;
+}
+
+function cls(type){return({name:"nmb",trigger:"tr",input:"in",output:"outb",if:"iff",forget:"fgb"})[type]||"";}
+function mini(t,title,fn,disabled,danger){const b=document.createElement("button");b.className="mini"+(danger?" danger":"");b.type="button";b.textContent=t;b.title=title;b.disabled=!!disabled;b.onclick=fn;return b;}
+
+function buildBody(b,body){
+  if(b.type==="name"){
+    body.appendChild(field("Name",input(b.value,"Program name",v=>{b.value=v;soft(b);})));
+    body.appendChild(noteEl("Program NAME is optional in SFML and used as the default export filename."));
+    return;
+  }
+
+  if(b.type==="trigger"){
+    const mode=select([["interval","Interval"],["redstone","Redstone pulse"]],b.scheduleMode,v=>{b.scheduleMode=v;sync();soft(b);});
+    body.appendChild(field("Trigger",mode));
+    const val=input(b.intervalValue,"20",v=>{b.intervalValue=v;soft(b);});val.style.maxWidth="90px";
+    const unit=select([["tick","tick"],["ticks","ticks"],["second","second"],["seconds","seconds"]],b.intervalUnit,v=>{b.intervalUnit=v;soft(b);});unit.style.maxWidth="100px";
+    const off=input(b.intervalOffset,"+ offset",v=>{b.intervalOffset=v;soft(b);});off.style.maxWidth="110px";
+    const line=document.createElement("div");line.className="inline";
+    line.append(val,unit,check(b.intervalGlobal,"GLOBAL",v=>{b.intervalGlobal=v;soft(b);}),off);
+    body.appendChild(field("Schedule",line));
+    sync();
+    body.appendChild(zone("Statements",b.children));
+    body.appendChild(noteEl("Supports EVERY <n> [GLOBAL] [+ offset] TICK(S) / SECOND(S) DO and EVERY REDSTONE PULSE DO."));
+    function sync(){const dis=b.scheduleMode==="redstone";val.disabled=dis;unit.disabled=dis;off.disabled=dis;}
+    return;
+  }
+
+  if(b.type==="input"||b.type==="output"){
+    const isOut=b.type==="output";
+    body.appendChild(field("Order",select(isOut?[["action-first","OUTPUT ... TO"],["location-first","TO ... OUTPUT"]]:[["action-first","INPUT ... FROM"],["location-first","FROM ... INPUT"]],b.order,v=>{b.order=v;soft(b);})));
+    if(isOut) body.appendChild(field("Output",check(b.emptySlots,"EMPTY SLOTS IN",v=>{b.emptySlots=v;soft(b);})));
+
+    const wrap=document.createElement("div");wrap.className="grow";
+    b.limits.forEach((lim,idx)=>wrap.appendChild(limitCard(b,lim,idx)));
+    const add=document.createElement("button");add.className="fieldbtn";add.type="button";add.textContent="+ Add limit";
+    add.onclick=()=>{b.limits.push(makeLimit());renderAll();scheduleSave("Limit added");};
+    wrap.appendChild(add);
+    body.appendChild(field("Limits",wrap));
+
+    body.appendChild(field("Except",ta(b.exclusions,"cobblestone, dirt, fluid:lava",v=>{b.exclusions=v;soft(b);})));
+    body.appendChild(field("Labels",input(b.labels,'furnace, "Fuel Chest"',v=>{b.labels=v;soft(b);})));
+    body.appendChild(field(isOut?"To":"From",check(b.eachLabels,"EACH",v=>{b.eachLabels=v;soft(b);})));
+    body.appendChild(field("Round robin",select([["","Disabled"],["label","ROUND ROBIN BY LABEL"],["block","ROUND ROBIN BY BLOCK"]],b.roundRobin,v=>{b.roundRobin=v;soft(b);})));
+
+    const sm=select([["","No side qualifier"],["listed","Listed sides"],["each","EACH SIDE"]],b.sideMode,v=>{b.sideMode=v;sync();soft(b);});
+    body.appendChild(field("Sides",sm));
+    const sides=input(b.sides,"top, north, west",v=>{b.sides=v;soft(b);});
+    body.appendChild(field("Side list",sides));
+    body.appendChild(field("Slots",input(b.slots,"0, 1, 3-5",v=>{b.slots=v;soft(b);})));
+    sync();
+    body.appendChild(noteEl("Supports multiple limits, OR resource lists, WITH / WITHOUT clauses, EXCEPT lists, ROUND ROBIN, side qualifiers, and slots."));
+    function sync(){sides.disabled=b.sideMode!=="listed";}
+    return;
+  }
+
+  if(b.type==="if"){
+    const wrap=document.createElement("div");wrap.className="grow";
+    b.branches.forEach((br,idx)=>wrap.appendChild(branchCard(b,br,idx)));
+    const add=document.createElement("button");add.className="fieldbtn";add.type="button";add.textContent="+ Add ELSE IF";
+    add.onclick=()=>{b.branches.push(makeBranch("TRUE"));renderAll();scheduleSave("ELSE IF branch added");};
+    wrap.appendChild(add);
+    body.appendChild(field("Branches",wrap));
+
+    const elseWrap=document.createElement("div");elseWrap.className="grow";
+    const addElse=document.createElement("button");addElse.className="fieldbtn";addElse.type="button";addElse.textContent=b.hasElse?"Remove ELSE":"Add ELSE";
+    addElse.onclick=()=>{b.hasElse=!b.hasElse;if(!b.hasElse)b.elseBlocks=[];renderAll();scheduleSave("ELSE branch updated");};
+    elseWrap.appendChild(addElse);
+    if(b.hasElse) elseWrap.appendChild(zone("Else statements",b.elseBlocks));
+    else{
+      const mk=document.createElement("button");mk.className="fieldbtn";mk.type="button";mk.textContent="+ Create ELSE branch";
+      mk.onclick=()=>{b.hasElse=true;renderAll();scheduleSave("ELSE branch created");};
+      elseWrap.appendChild(mk);
+    }
+    body.appendChild(field("Else",elseWrap));
+    body.appendChild(noteEl("Type raw boolean expressions such as REDSTONE > 0, OVERALL chest HAS >= 64 iron_ingot, or nested expressions with parentheses."));
+    return;
+  }
+
+  if(b.type==="forget"){
+    body.appendChild(field("Labels",input(b.labels,"leave blank to clear current inputs only",v=>{b.labels=v;soft(b);})));
+    body.appendChild(noteEl("FORGET alone clears current inputs. FORGET label1, label2 also clears named labels."));
+  }
+}
+
+function limitCard(block,lim,idx){
+  const c=document.createElement("div");c.className="card";
+  const h=document.createElement("div");h.className="cardhead";h.innerHTML='<div class="tag">Limit '+(idx+1)+'</div>';
+  const rm=document.createElement("button");rm.className="fieldbtn";rm.type="button";rm.textContent="Remove";rm.disabled=block.limits.length<=1;
+  rm.onclick=()=>{if(block.limits.length<=1)return;block.limits.splice(idx,1);renderAll();scheduleSave("Limit removed");};
+  h.appendChild(rm);c.appendChild(h);
+
+  const q=input(lim.quantity,"1",v=>{lim.quantity=v;soft(block);});q.style.maxWidth="90px";
+  const r=input(lim.retain,"64",v=>{lim.retain=v;soft(block);});r.style.maxWidth="90px";
+  const qrow=document.createElement("div");qrow.className="inline";qrow.append(q,check(lim.quantityEach,"EACH",v=>{lim.quantityEach=v;soft(block);}));
+  const rrow=document.createElement("div");rrow.className="inline";rrow.append(r,check(lim.retainEach,"EACH",v=>{lim.retainEach=v;soft(block);}));
+  c.appendChild(field("Quantity",qrow));
+  c.appendChild(field("Retain",rrow));
+  c.appendChild(field("Resources",input(lim.resources,"coal OR charcoal OR fluid:minecraft:water",v=>{lim.resources=v;soft(block);})));
+
+  const mode=select([["","No WITH filter"],["with","WITH"],["without","WITHOUT"]],lim.withMode,v=>{lim.withMode=v;sync();soft(block);});
+  const clause=ta(lim.withClause,"TAG minecraft:planks AND NOT TAG minecraft:logs",v=>{lim.withClause=v;soft(block);});
+  c.appendChild(field("Filter",mode));
+  c.appendChild(field("Clause",clause));
+  sync();
+  function sync(){clause.disabled=!lim.withMode;}
+  return c;
+}
+
+function branchCard(block,br,idx){
+  const c=document.createElement("div");c.className="card";
+  const h=document.createElement("div");h.className="cardhead";h.innerHTML='<div class="tag">'+(idx===0?"If branch":"Else if branch "+idx)+'</div>';
+  if(idx>0){
+    const rm=document.createElement("button");rm.className="fieldbtn";rm.type="button";rm.textContent="Remove";
+    rm.onclick=()=>{block.branches.splice(idx,1);renderAll();scheduleSave("ELSE IF branch removed");};
+    h.appendChild(rm);
+  }
+  c.appendChild(h);
+  c.appendChild(field("Condition",ta(br.condition,"OVERALL chest HAS >= 64 iron_ingot",v=>{br.condition=v;soft(block);})));
+  c.appendChild(zone(idx===0?"Then statements":"Else if statements",br.blocks));
+  return c;
+}
+
+function zone(title,arr){
+  const z=document.createElement("div");z.className="zone";
+  const h=document.createElement("div");h.className="zonehead";h.innerHTML='<div class="tag">'+title+'</div>';z.appendChild(h);
+  const items=document.createElement("div");items.className="zoneitems";
+  if(!arr.length){const e=document.createElement("div");e.className="zoneempty";e.textContent="No statements yet.";items.appendChild(e);}
+  else arr.forEach((b,i)=>items.appendChild(renderBlock(b,arr,i)));
+  z.appendChild(items);
+  const add=document.createElement("div");add.className="add";
+  STATEMENTS.forEach(t=>{const b=document.createElement("button");b.className="fieldbtn";b.type="button";b.textContent="+ "+t.toUpperCase();b.onclick=()=>addStatement(arr,t);add.appendChild(b);});
+  z.appendChild(add);
+  return z;
+}
+
+function field(label,control){const row=document.createElement("div");row.className="row";const l=document.createElement("div");l.className="lab";l.textContent=label;row.append(l,control);return row;}
+function input(v,p,on){const e=document.createElement("input");e.type="text";e.className="inp";e.value=v||"";e.placeholder=p||"";e.spellcheck=false;e.oninput=()=>on(e.value);return e;}
+function ta(v,p,on){const e=document.createElement("textarea");e.className="ta";e.value=v||"";e.placeholder=p||"";e.rows=3;e.spellcheck=false;e.oninput=()=>on(e.value);return e;}
+function select(opts,v,on){const e=document.createElement("select");e.className="sel";opts.forEach(([ov,lab])=>{const o=document.createElement("option");o.value=ov;o.textContent=lab;e.appendChild(o);});e.value=v;e.onchange=()=>on(e.value);return e;}
+function check(v,label,on){const w=document.createElement("label");w.className="check";const c=document.createElement("input");c.type="checkbox";c.checked=!!v;c.onchange=()=>on(c.checked);w.append(c,document.createTextNode(label));return w;}
+function noteEl(text){const d=document.createElement("div");d.className="note";d.textContent=text;return d;}
+function normWs(s){return(s||"").replace(/\s+/g," ").trim();}
+function short(s,n){s=normWs(s);return s.length<=n?s:s.slice(0,n-3)+"...";}
+function soft(b){const el=document.querySelector('.block[data-id="'+b.id+'"] .label');if(el) el.textContent=blockLabel(b);generateCode();scheduleSave("Autosaving...");}
+function blockLabel(b){if(b.type==="name")return'NAME "'+short(b.value||"",28)+'"';if(b.type==="trigger")return triggerHead(b).replace(/\s+DO$/,"");if(b.type==="input")return"INPUT "+short(firstLimit(b)||labelAccess(b)||"...",38);if(b.type==="output")return"OUTPUT "+short(firstLimit(b)||labelAccess(b)||"...",38);if(b.type==="if")return"IF "+short(b.branches[0]?.condition||"TRUE",40);if(b.type==="forget")return b.labels?"FORGET "+short(b.labels,34):"FORGET";return b.type.toUpperCase();}
+function firstLimit(b){const x=b.limits.map(formatLimit).filter(Boolean);return x[0]||"";}
+
+function generateCode(){
+  const chunks=[];
+  blocks.forEach(b=>{const lines=toLines(b,0);if(lines.length) chunks.push(lines.join("\n"));});
+  lastCode=chunks.join("\n\n").trim();
+  document.getElementById("out").innerHTML=lastCode?highlight(lastCode):'<span class="cmt">-- Start building to see code</span>';
+}
+
+function toLines(b,depth){
+  const I="    ".repeat(depth);
+  if(b.type==="name") return [I+'NAME "'+escQuote(b.value||"Program")+'"'];
+  if(b.type==="trigger"){
+    const lines=[I+triggerHead(b)];
+    b.children.forEach(x=>lines.push(...toLines(x,depth+1)));
+    lines.push(I+"END");
+    return lines;
+  }
+  if(b.type==="input"||b.type==="output") return ioLines(b,depth);
+  if(b.type==="if"){
+    const lines=[];
+    b.branches.forEach((br,i)=>{
+      lines.push(I+(i===0?"IF ":"ELSE IF ")+(br.condition?.trim()||"TRUE")+" THEN");
+      br.blocks.forEach(x=>lines.push(...toLines(x,depth+1)));
+    });
+    if(b.hasElse){
+      lines.push(I+"ELSE");
+      b.elseBlocks.forEach(x=>lines.push(...toLines(x,depth+1)));
+    }
+    lines.push(I+"END");
+    return lines;
+  }
+  if(b.type==="forget") return [I+(b.labels.trim()?"FORGET "+splitLoose(b.labels).join(", "):"FORGET")];
+  return [];
+}
+
+function triggerHead(b){
+  if(b.scheduleMode==="redstone") return "EVERY REDSTONE PULSE DO";
+  const parts=["EVERY",(b.intervalValue?.trim()||"1")];
+  if(b.intervalGlobal) parts.push("GLOBAL");
+  if(b.intervalOffset?.trim()) parts.push("+",b.intervalOffset.trim());
+  parts.push((b.intervalUnit||"ticks").toUpperCase(),"DO");
+  return parts.join(" ");
+}
+
+function ioLines(b,depth){
+  const I="    ".repeat(depth),kw=b.type.toUpperCase(),loc=locationClause(b),limits=b.limits.map(formatLimit).filter(Boolean),ex=splitLoose(b.exclusions),multi=limits.length>1||ex.length>1||(limits.length&&ex.length),lines=[];
+  if(b.order==="action-first"){
+    if(!multi){
+      const p=[kw];
+      if(limits[0]) p.push(limits[0]);
+      if(ex[0]) p.push("EXCEPT",ex[0]);
+      if(loc) p.push(loc);
+      return [I+p.join(" ").trim()];
+    }
+    lines.push(I+kw);
+    limits.forEach((x,i)=>lines.push(I+"  "+x+(i<limits.length-1?",":"")));
+    if(ex.length){
+      lines.push(I+"EXCEPT");
+      ex.forEach((x,i)=>lines.push(I+"  "+x+(i<ex.length-1?",":"")));
+    }
+    lines.push(I+loc);
+    return lines;
+  }
+  if(!multi){
+    const p=[loc,kw];
+    if(limits[0]) p.push(limits[0]);
+    if(ex[0]) p.push("EXCEPT",ex[0]);
+    return [I+p.join(" ").trim()];
+  }
+  lines.push(I+[loc,kw].join(" ").trim());
+  limits.forEach((x,i)=>lines.push(I+"  "+x+(i<limits.length-1?",":"")));
+  if(ex.length){
+    lines.push(I+"EXCEPT");
+    ex.forEach((x,i)=>lines.push(I+"  "+x+(i<ex.length-1?",":"")));
+  }
+  return lines;
+}
+
+function locationClause(b){
+  const p=[b.type==="input"?"FROM":"TO"];
+  if(b.type==="output"&&b.emptySlots) p.push("EMPTY SLOTS IN");
+  if(b.eachLabels) p.push("EACH");
+  const la=labelAccess(b);
+  if(la) p.push(la);
+  return p.join(" ").trim();
+}
+
+function labelAccess(b){
+  const p=[],labels=splitLoose(b.labels).join(", ");
+  if(labels) p.push(labels);
+  if(b.roundRobin) p.push("ROUND ROBIN BY "+b.roundRobin.toUpperCase());
+  if(b.sideMode==="each") p.push("EACH SIDE");
+  else if(b.sideMode==="listed"){
+    const s=splitLoose(b.sides).join(", ");
+    if(s) p.push(s+" SIDE");
+  }
+  if(b.slots?.trim()) p.push("SLOTS "+normWs(b.slots));
+  return p.join(" ").trim();
+}
+
+function formatLimit(l){
+  const p=[];
+  if(l.quantity.trim()){p.push(l.quantity.trim());if(l.quantityEach) p.push("EACH");}
+  if(l.retain.trim()){p.push("RETAIN",l.retain.trim());if(l.retainEach) p.push("EACH");}
+  if(l.resources.trim()) p.push(l.resources.trim());
+  if(l.withMode&&l.withClause.trim()) p.push(l.withMode.toUpperCase(),l.withClause.trim());
+  return p.join(" ").trim();
+}
+
+function splitLoose(v){return(v||"").split(/[\r\n,]+/).map(x=>normWs(x)).filter(Boolean);}
+function escQuote(s){return String(s).replace(/\\/g,"\\\\").replace(/"/g,'\\"');}
+function escHtml(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function escText(s){return escHtml(String(s));}
+
+function highlight(code){
+  const stash=[],hold=html=>{stash.push(html);return"@@"+(stash.length-1)+"@@";};
+  let h=escHtml(code);
+  h=h.replace(/"([^"\\]|\\.)*"/g,m=>hold('<span class="str">'+m+"</span>"));
+  h=h.replace(/--[^\n]*/g,m=>hold('<span class="cmt">'+m+"</span>"));
+  h=h.replace(/\b\d+\b/g,'<span class="num">$&</span>');
+  h=h.replace(/\b(EVERY|GLOBAL|DO|END|REDSTONE|PULSE|TICKS|TICK|SECONDS|SECOND|INPUT|OUTPUT|FROM|TO|IF|THEN|ELSE|FORGET|NAME|RETAIN|EACH|EXCEPT|WITH|WITHOUT|TAG|ROUND|ROBIN|BY|LABEL|BLOCK|SLOTS|SLOT|SIDE|TOP|BOTTOM|NORTH|EAST|SOUTH|WEST|LEFT|RIGHT|FRONT|BACK|NULL|HAS|OVERALL|SOME|ONE|LONE|TRUE|FALSE|NOT|AND|OR|EMPTY|IN)\b/gi,t=>{
+    const u=t.toUpperCase();
+    if(["EVERY","GLOBAL","DO","END","REDSTONE","PULSE","TICKS","TICK","SECONDS","SECOND"].includes(u)) return '<span class="tk">'+t+"</span>";
+    if(["INPUT","FROM"].includes(u)) return '<span class="kw2">'+t+"</span>";
+    if(["OUTPUT","TO","EMPTY","IN"].includes(u)) return '<span class="kw">'+t+"</span>";
+    if(["IF","THEN","ELSE","TRUE","FALSE","NOT","AND","OR","HAS","OVERALL","SOME","ONE","LONE"].includes(u)) return '<span class="kw3">'+t+"</span>";
+    if(["RETAIN","EACH","EXCEPT","WITH","WITHOUT","TAG","ROUND","ROBIN","BY","LABEL","BLOCK","SLOTS","SLOT","SIDE","TOP","BOTTOM","NORTH","EAST","SOUTH","WEST","LEFT","RIGHT","FRONT","BACK","NULL","FORGET","NAME"].includes(u)) return '<span class="item">'+t+"</span>";
+    return t;
+  });
+  h=h.replace(/(&gt;=|&lt;=|&gt;|&lt;|=|\bGT\b|\bGE\b|\bLT\b|\bLE\b|\bEQ\b)/g,'<span class="item">$1</span>');
+  return h.replace(/@@(\d+)@@/g,(_,i)=>stash[+i]);
+}
+
+function copyCode(){
+  if(!lastCode) return;
+  navigator.clipboard.writeText(lastCode).then(()=>{
+    saveStatus("Generated SFM copied");
+    setTimeout(()=>saveStatus("Autosaved at "+fmtTime(Date.now())),1000);
+  }).catch(e=>{
+    console.error(e);
+    saveStatus("Copy failed");
+  });
+}
+
+function exportSFM(){
+  if(!lastCode) return;
+  const base=((blocks.find(b=>b.type==="name")?.value||currentName()).trim()||"program").replace(/[\\/:*?"<>|]+/g,"_");
+  const blob=new Blob([lastCode],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=base+".sfm";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  saveStatus("Exported "+base+".sfm");
+}
+
+function clearAll(){
+  if(!blocks.length) return;
+  if(!confirm("Clear all blocks from the current local script?")) return;
+  const s=currentScript();
+  if(!s) return;
+  s.blocks=[];
+  blocks=s.blocks;
+  renderAll();
+  scheduleSave("Current script cleared");
+}
+</script>
+</body>
+</html>
