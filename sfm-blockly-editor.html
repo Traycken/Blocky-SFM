@@ -46,6 +46,7 @@
   <button class="btn" onclick="loadExample()">Load Example</button>
   <button class="btn" onclick="saveCopy()">Save Copy</button>
   <button class="btn" onclick="clearAll()">Clear</button>
+  <button class="btn" onclick="importSFM()">Import .sfm</button>
   <button class="btn primary" onclick="exportSFM()">Export .sfm</button>
   <div id="status">Local autosave active</div>
   <div id="themes">
@@ -481,8 +482,8 @@ function renderBlock(b,arr,i){
 
   const actions=document.createElement("div");
   actions.className="actions";
-  actions.appendChild(mini("u","Move up",()=>move(arr,i,-1),i===0));
-  actions.appendChild(mini("d","Move down",()=>move(arr,i,1),i===arr.length-1));
+  actions.appendChild(mini("↑","Move up",()=>move(arr,i,-1),i===0));
+  actions.appendChild(mini("↓","Move down",()=>move(arr,i,1),i===arr.length-1));
   actions.appendChild(mini("+","Duplicate",()=>dup(arr,i)));
   actions.appendChild(mini("x","Delete",()=>del(arr,i),false,true));
   head.appendChild(actions);
@@ -607,11 +608,6 @@ function buildBody(b,body){
     addElse.onclick=()=>{b.hasElse=!b.hasElse;if(!b.hasElse)b.elseBlocks=[];renderAll();scheduleSave("ELSE branch updated");};
     elseWrap.appendChild(addElse);
     if(b.hasElse) elseWrap.appendChild(zone("Else statements",b.elseBlocks));
-    else{
-      const mk=document.createElement("button");mk.className="fieldbtn";mk.type="button";mk.textContent="+ Create ELSE branch";
-      mk.onclick=()=>{b.hasElse=true;renderAll();scheduleSave("ELSE branch created");};
-      elseWrap.appendChild(mk);
-    }
     body.appendChild(field("Else",elseWrap));
     body.appendChild(noteEl("Type raw boolean expressions such as REDSTONE > 0, OVERALL chest HAS >= 64 iron_ingot, or nested expressions with parentheses."));
     return;
@@ -648,6 +644,16 @@ function limitCard(block,lim,idx){
   return c;
 }
 
+function showConditionHelp(){
+  alert(`Condition Syntax Examples:
+- REDSTONE > 0
+- OVERALL chest HAS >= 64 iron_ingot
+- SOME result_buffer HAS < 10 coal
+- NOT (REDSTONE > 0 OR fuel_chest HAS < 5 charcoal)
+- LONE iron_ore
+- iron_ingot AND gold_ingot`);
+}
+
 function branchCard(block,br,idx){
   const c=document.createElement("div");c.className="card";
   const h=document.createElement("div");h.className="cardhead";h.innerHTML='<div class="tag">'+(idx===0?"If branch":"Else if branch "+idx)+'</div>';
@@ -657,7 +663,9 @@ function branchCard(block,br,idx){
     h.appendChild(rm);
   }
   c.appendChild(h);
-  c.appendChild(field("Condition",ta(br.condition,"OVERALL chest HAS >= 64 iron_ingot",v=>{br.condition=v;soft(block);})));
+  const condLab=document.createElement("div");condLab.className="inline";
+  condLab.append(document.createTextNode("Condition"),mini("?","Syntax Help",()=>showConditionHelp()));
+  c.appendChild(field(condLab,ta(br.condition,"OVERALL chest HAS >= 64 iron_ingot",v=>{br.condition=v;soft(block);})));
   c.appendChild(zone(idx===0?"Then statements":"Else if statements",br.blocks));
   return c;
 }
@@ -678,7 +686,12 @@ function zone(title,arr){
   return z;
 }
 
-function field(label,control){const row=document.createElement("div");row.className="row";const l=document.createElement("div");l.className="lab";l.textContent=label;row.append(l,control);return row;}
+function field(label,control){
+  const row=document.createElement("div");row.className="row";
+  const l=document.createElement("div");l.className="lab";
+  if(typeof label==="string") l.textContent=label; else l.appendChild(label);
+  row.append(l,control);return row;
+}
 function row(label,control){const f=field(label,control);return f;}
 function input(v,p,on){const e=document.createElement("input");e.type="text";e.className="inp";e.value=v||"";e.placeholder=p||"";e.spellcheck=false;e.oninput=()=>on(e.value);return e;}
 function ta(v,p,on){const e=document.createElement("textarea");e.className="ta";e.value=v||"";e.placeholder=p||"";e.rows=3;e.spellcheck=false;e.oninput=()=>on(e.value);return e;}
@@ -836,10 +849,42 @@ function copyCode(){
   });
 }
 
+function importSFM(){
+  const inp=document.createElement("input");
+  inp.type="file";
+  inp.accept=".sfm";
+  inp.onchange=e=>{
+    const file=e.target.files[0];
+    if(!file) return;
+    const reader=new FileReader();
+    reader.onload=re=>{
+      const content=re.target.result;
+      const m=content.match(/-- METADATA: (.*)$/);
+      if(!m){alert("Could not find block metadata in this .sfm file.");return;}
+      try{
+        const meta=JSON.parse(m[1]);
+        const s=createScript(meta.name||"Imported Script",meta.blocks||[]);
+        s.tags=Array.isArray(meta.tags)?meta.tags:[];
+        app.scripts.unshift(s);
+        openScript(s.id);
+        saveStatus("Imported "+file.name);
+      }catch(err){
+        console.error(err);
+        alert("Failed to parse metadata.");
+      }
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+
 function exportSFM(){
   if(!lastCode) return;
-  const base=((blocks.find(b=>b.type==="name")?.value||currentName()).trim()||"program").replace(/[\\/:*?"<>|]+/g,"_");
-  const blob=new Blob([lastCode],{type:"text/plain;charset=utf-8"});
+  const s=currentScript();
+  const meta={name:s.name,tags:s.tags,blocks:s.blocks};
+  const codeWithMeta=lastCode+"\n\n-- METADATA: "+JSON.stringify(meta);
+  const base=(currentName().trim()||"program").replace(/[\\/:*?"<>|]+/g,"_");
+  const blob=new Blob([codeWithMeta],{type:"text/plain;charset=utf-8"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
   a.href=url;
