@@ -1,3 +1,4 @@
+Make with ai
 # SFM Blockly Editor
 
 A visual, block-based editor for creating and managing **Super Factory Manager (SFM)** scripts for Minecraft. This tool allows players to build complex automation logic using a drag-and-drop interface, with automatic code generation and robust import/export capabilities.
