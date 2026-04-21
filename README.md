@@ -17,7 +17,7 @@ A visual, block-based editor for creating and managing **Super Factory Manager (
 
 The SFM Blockly Editor is a **single-file web application**. No installation is required.
 
-Visit https://traycken.github.io/Blocky-SFM/sfm-blockly-editor.html
+Visit: https://traycken.github.io/Blocky-SFM/sfm-blockly-editor.html
 
 or
 
