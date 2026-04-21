@@ -34,4 +34,4 @@ or
 
 ## 📄 License
 
-This project is open-source and available for use in any Minecraft modding context.
+This project is open-source.
