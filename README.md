@@ -1,7 +1,7 @@
-Make with ai
+Make with AI
 # SFM Blockly Editor
 
-A visual, block-based editor for creating and managing **Super Factory Manager (SFM)** scripts for Minecraft. This tool allows players to build complex automation logic using a drag-and-drop interface, with automatic code generation and robust import/export capabilities.
+A visual, block-based editor for creating and managing **Super Factory Manager (SFM)** scripts for Minecraft. This tool allows players to build complex automation logic using a interface, with automatic code generation and import/export capabilities.
 
 ## ✨ Key Features
 
@@ -27,7 +27,7 @@ or
 
 ## 🛠 Usage Tips
 
--   **Nesting:** Drag **Input**, **Output**, **If**, and **Forget** blocks directly into the "Statements" zones of **Triggers** or **IF branches**.
+-   **Nesting:** ADD **Input**, **Output**, **If**, and **Forget** blocks directly into the "Statements" zones of **Triggers** or **IF branches**.
 -   **Importing:** Use the "Import .sfm" button to load your existing scripts. Even if they weren't created with this editor, the heuristic parser will do its best to rebuild them.
 -   **Exporting:** Click "Export .sfm" to save your script to a file that can be loaded directly into a Minecraft SFM Manager.
 -   **Nesting Clarity:** Look at the colored backgrounds and left-border accents to understand the depth and flow of your logic.
