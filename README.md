@@ -35,3 +35,12 @@ or
 ## 📄 License
 
 This project is open-source.
+
+<!-- auto-github-signature-start -->
+---
+*Synchronisé automatiquement avec [Auto-Github](https://github.com/Traycken/Auto-Github)*
+
+[![Auto-Github](https://img.shields.io/badge/Auto--Github-Automated-blue?style=flat-square&logo=github)](https://github.com/Traycken/Auto-Github)
+
+[![Traycken](https://img.shields.io/badge/Traycken-Dev-red?style=flat-square&logo=github)](https://github.com/Traycken)
+<!-- auto-github-signature-end -->
